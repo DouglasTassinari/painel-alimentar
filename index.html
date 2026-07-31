@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f1115">
+<title>Painel Alimentar</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🟢</text></svg>">
+<style>
+:root{
+  --bg:#0f1115; --card:#171a21; --card2:#1e222b; --line:#282d38;
+  --txt:#e8eaed; --dim:#9aa1ad; --dim2:#6b7280;
+  --verde:#22c55e; --amarelo:#f0b429; --vermelho:#ef4444;
+  --azul:#4b9fff; --roxo:#a78bfa;
+  --r:14px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--txt);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  font-size:16px; line-height:1.45;
+  padding-bottom:86px;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:620px;margin:0 auto;padding:16px 14px 0}
+h1{font-size:19px;margin:0;font-weight:650;letter-spacing:-.2px}
+h2{font-size:13px;margin:26px 0 10px;color:var(--dim);text-transform:uppercase;letter-spacing:.7px;font-weight:600}
+.sub{color:var(--dim);font-size:13px;margin:2px 0 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:12px}
+
+/* ---------- topo ---------- */
+header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px}
+
+/* ---------- navegação de dia ---------- */
+.daynav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:14px}
+.daynav button{
+  background:var(--card);border:1px solid var(--line);color:var(--txt);
+  width:42px;height:42px;border-radius:12px;font-size:19px;cursor:pointer;flex:none
+}
+.daynav button:disabled{opacity:.3}
+.daylabel{flex:1;text-align:center}
+.daylabel .d1{font-size:16px;font-weight:600}
+.daylabel .d2{font-size:12px;color:var(--dim)}
+
+/* ---------- refeições ---------- */
+.meal{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;margin-bottom:10px}
+.meal-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.meal-name{font-weight:600;font-size:15px}
+.meal-hint{font-size:11px;color:var(--dim2)}
+.opts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.opt{
+  border:1.5px solid var(--line);background:var(--card2);color:var(--dim);
+  border-radius:11px;padding:13px 4px;font-size:12px;font-weight:600;
+  cursor:pointer;transition:.12s;display:flex;flex-direction:column;align-items:center;gap:5px;
+  font-family:inherit
+}
+.opt .ic{font-size:21px;line-height:1}
+.opt:active{transform:scale(.96)}
+.opt.on[data-v="v"]{background:rgba(34,197,94,.16);border-color:var(--verde);color:var(--verde)}
+.opt.on[data-v="a"]{background:rgba(240,180,41,.16);border-color:var(--amarelo);color:var(--amarelo)}
+.opt.on[data-v="r"]{background:rgba(239,68,68,.16);border-color:var(--vermelho);color:var(--vermelho)}
+
+/* ---------- pesagem ---------- */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+label{display:block;font-size:11px;color:var(--dim);margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px;font-weight:600}
+input,textarea,select{
+  width:100%;background:var(--card2);border:1px solid var(--line);color:var(--txt);
+  border-radius:10px;padding:11px 12px;font-size:16px;font-family:inherit
+}
+input:focus,textarea:focus{outline:none;border-color:var(--azul)}
+textarea{resize:vertical;min-height:56px;font-size:14px}
+.btn{
+  background:var(--azul);color:#fff;border:none;border-radius:11px;
+  padding:13px;font-size:15px;font-weight:600;width:100%;cursor:pointer;font-family:inherit
+}
+.btn:active{opacity:.8}
+.btn.ghost{background:var(--card2);color:var(--txt);border:1px solid var(--line)}
+.btn.danger{background:var(--card2);color:var(--vermelho);border:1px solid var(--line)}
+.btn.sm{padding:10px;font-size:13px}
+
+/* ---------- KPIs ---------- */
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:13px}
+.kpi .k-lab{font-size:10.5px;color:var(--dim);text-transform:uppercase;letter-spacing:.6px;font-weight:600}
+.kpi .k-val{font-size:26px;font-weight:680;letter-spacing:-.8px;margin-top:3px;line-height:1.1}
+.kpi .k-sub{font-size:11.5px;color:var(--dim2);margin-top:2px}
+.k-val small{font-size:14px;font-weight:600;color:var(--dim)}
+
+/* ---------- progresso ---------- */
+.goal{margin-bottom:16px}
+.goal-top{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;margin-bottom:7px}
+.goal-top b{font-size:14px}
+.bar{height:9px;background:var(--card2);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px;transition:width .5s}
+
+/* ---------- heatmap ---------- */
+.heat{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.heat .hd{font-size:9px;color:var(--dim2);text-align:center;padding-bottom:2px}
+.heat .c{aspect-ratio:1;border-radius:4px;background:var(--card2);border:1px solid transparent}
+.heat .c.f{background:rgba(255,255,255,.02);border-color:var(--line)}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--dim);margin-top:10px}
+.legend span{display:flex;align-items:center;gap:5px}
+.dot{width:9px;height:9px;border-radius:3px;display:inline-block}
+
+svg{display:block;width:100%;height:auto;overflow:visible}
+
+/* ---------- tabs ---------- */
+nav{
+  position:fixed;bottom:0;left:0;right:0;background:rgba(15,17,21,.94);
+  backdrop-filter:blur(12px);border-top:1px solid var(--line);
+  display:flex;padding:8px 6px calc(8px + env(safe-area-inset-bottom));z-index:50
+}
+nav button{
+  flex:1;background:none;border:none;color:var(--dim2);padding:6px 2px;
+  font-size:10.5px;font-weight:600;cursor:pointer;display:flex;flex-direction:column;
+  align-items:center;gap:3px;font-family:inherit;letter-spacing:.2px
+}
+nav button .ic{font-size:19px;line-height:1}
+nav button.on{color:var(--azul)}
+.page{display:none}
+.page.on{display:block}
+
+.empty{color:var(--dim2);font-size:13px;text-align:center;padding:26px 12px;line-height:1.6}
+.hr{height:1px;background:var(--line);margin:16px 0}
+.note{font-size:12px;color:var(--dim2);line-height:1.55;margin-top:8px}
+.toast{
+  position:fixed;bottom:96px;left:50%;transform:translateX(-50%) translateY(14px);
+  background:var(--verde);color:#062e13;padding:10px 20px;border-radius:99px;
+  font-size:13.5px;font-weight:650;opacity:0;transition:.25s;pointer-events:none;z-index:99;white-space:nowrap
+}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;color:var(--dim);font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;padding:0 6px 8px 0;font-weight:600}
+td{padding:8px 6px 8px 0;border-top:1px solid var(--line)}
+td.num{font-variant-numeric:tabular-nums}
+.del{background:none;border:none;color:var(--dim2);cursor:pointer;font-size:15px;padding:2px 4px}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<!-- ============ HOJE ============ -->
+<section class="page on" id="p-hoje">
+  <header>
+    <div>
+      <h1>Painel Alimentar</h1>
+      <p class="sub" id="streakTop">—</p>
+    </div>
+  </header>
+
+  <div class="daynav">
+    <button id="prevD">‹</button>
+    <div class="daylabel">
+      <div class="d1" id="dLab">—</div>
+      <div class="d2" id="dLab2">—</div>
+    </div>
+    <button id="nextD">›</button>
+  </div>
+
+  <div id="meals"></div>
+
+  <div class="card">
+    <label for="nota">Observação do dia (opcional)</label>
+    <textarea id="nota" placeholder="Ex.: aniversário no trabalho, dormi mal, treinei pesado…"></textarea>
+  </div>
+
+  <h2>Pesagem</h2>
+  <div class="card">
+    <p class="note" style="margin:0 0 12px">Só quando subir na balança. 1× por semana já basta — o painel usa média móvel pra filtrar o ruído do dia a dia.</p>
+    <div class="grid2">
+      <div><label for="mPeso">Peso (kg) *</label><input id="mPeso" type="number" step="0.05" inputmode="decimal" placeholder="80.5"></div>
+      <div><label for="mGord">Gordura (%)</label><input id="mGord" type="number" step="0.1" inputmode="decimal" placeholder="22.0"></div>
+      <div><label for="mVisc">Gordura visceral</label><input id="mVisc" type="number" step="0.1" inputmode="decimal" placeholder="10"></div>
+      <div><label for="mAgua">Água (%)</label><input id="mAgua" type="number" step="0.1" inputmode="decimal" placeholder="55.0"></div>
+      <div><label for="mMusc">Massa muscular (kg)</label><input id="mMusc" type="number" step="0.1" inputmode="decimal" placeholder="55.0"></div>
+      <div><label for="mData">Data</label><input id="mData" type="date"></div>
+    </div>
+    <div style="height:12px"></div>
+    <button class="btn" id="salvaMed">Registrar pesagem</button>
+  </div>
+</section>
+
+<!-- ============ PAINEL ============ -->
+<section class="page" id="p-painel">
+  <header><div><h1>Painel</h1><p class="sub" id="pnlSub">—</p></div></header>
+  <div id="painelBody"></div>
+</section>
+
+<!-- ============ DADOS ============ -->
+<section class="page" id="p-dados">
+  <header><div><h1>Dados</h1><p class="sub">Histórico, metas e backup</p></div></header>
+
+  <h2>Metas</h2>
+  <div class="card">
+    <div class="grid2">
+      <div><label for="cfgAlt">Altura (cm)</label><input id="cfgAlt" type="number" step="1" inputmode="numeric"></div>
+      <div><label for="cfgM1">Meta 1 — kg</label><input id="cfgM1" type="number" step="0.1" inputmode="decimal"></div>
+      <div><label for="cfgM2">Meta 2 — kg</label><input id="cfgM2" type="number" step="0.1" inputmode="decimal"></div>
+      <div><label for="cfgTmb">Metabolismo basal</label><input id="cfgTmb" type="number" step="1" inputmode="numeric"></div>
+    </div>
+    <p class="note">Meta 1 = sair da faixa "Obeso" da sua balança (IMC&nbsp;30). Meta 2 = entrar na faixa saudável (IMC&nbsp;25). Ambas recalculam sozinhas se você mudar a altura.</p>
+    <div style="height:12px"></div>
+    <button class="btn ghost sm" id="salvaCfg">Salvar metas</button>
+  </div>
+
+  <h2>Pesagens registradas</h2>
+  <div class="card" id="tabMed"></div>
+
+  <h2>Backup</h2>
+  <div class="card">
+    <p class="note" style="margin:0 0 12px">Os dados ficam salvos só neste navegador. Exporte de vez em quando — se limpar o histórico do navegador, some tudo.</p>
+    <button class="btn ghost sm" id="expBtn">⬇ Exportar backup (.json)</button>
+    <div style="height:8px"></div>
+    <button class="btn ghost sm" id="impBtn">⬆ Importar backup</button>
+    <input type="file" id="impFile" accept="application/json,.json" hidden>
+    <div class="hr"></div>
+    <button class="btn danger sm" id="zerar">Apagar todos os dados</button>
+  </div>
+</section>
+
+</div>
+
+<nav>
+  <button class="on" data-p="hoje"><span class="ic">✓</span>Hoje</button>
+  <button data-p="painel"><span class="ic">📊</span>Painel</button>
+  <button data-p="dados"><span class="ic">⚙</span>Dados</button>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ==================================================================
+   PAINEL ALIMENTAR — registro por semáforo + composição corporal
+   Dados 100% locais (localStorage). Sem dependências externas.
+   ================================================================== */
+
+const KEY = 'painel-alimentar-v1';
+const REFS = [
+  {id:'cafe',   nome:'Café da manhã', hint:'até ~10h'},
+  {id:'almoco', nome:'Almoço',        hint:'refeição principal'},
+  {id:'janta',  nome:'Janta',         hint:'última refeição'},
+  {id:'extras', nome:'Extras',        hint:'lanches, bebidas, doces'}
+];
+const VALORES = [
+  {v:'v', ic:'🟢', lab:'No plano', peso:1},
+  {v:'a', ic:'🟡', lab:'Escorreguei', peso:0.5},
+  {v:'r', ic:'🔴', lab:'Fora', peso:0}
+];
+const PESO_DE = {v:1, a:0.5, r:0};
+const COR_DE  = {v:'var(--verde)', a:'var(--amarelo)', r:'var(--vermelho)'};
+
+/* ---------- estado ---------- */
+let S = carregar();
+let cursor = hojeISO();
+
+function padrao(){
+  return {
+    /* partida = peso no dia em que o painel começou a ser usado. Definido na
+       1ª pesagem; sem ele a barra de progresso partiria do registro mais antigo. */
+    cfg: {altura:175, meta1:91.6, meta2:76.3, tmb:2000, partida:null},
+    dias: {},
+    medidas: []
+  };
+}
+function carregar(){
+  try{
+    const r = localStorage.getItem(KEY);
+    if(!r) return padrao();
+    const o = JSON.parse(r);
+    return {...padrao(), ...o, cfg:{...padrao().cfg, ...(o.cfg||{})}};
+  }catch(e){ return padrao(); }
+}
+function salvar(){ localStorage.setItem(KEY, JSON.stringify(S)); }
+
+/* ---------- datas ---------- */
+function hojeISO(){
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function parseISO(s){ const [a,m,d]=s.split('-').map(Number); return new Date(a,m-1,d); }
+function toISO(d){ return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
+function addDias(iso,n){ const d=parseISO(iso); d.setDate(d.getDate()+n); return toISO(d); }
+function diffDias(a,b){ return Math.round((parseISO(b)-parseISO(a))/864e5); }
+
+const DIAS_SEM = ['domingo','segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira','sábado'];
+const MESES = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+
+function rotuloDia(iso){
+  const d = parseISO(iso), h = hojeISO();
+  if(iso===h) return 'Hoje';
+  if(iso===addDias(h,-1)) return 'Ontem';
+  if(iso===addDias(h,-2)) return 'Anteontem';
+  return DIAS_SEM[d.getDay()].replace('-feira','');
+}
+function rotuloData(iso){
+  const d = parseISO(iso);
+  return `${d.getDate()} de ${MESES[d.getMonth()]}. de ${d.getFullYear()}`;
+}
+function fmt(n,c=1){ return n==null||isNaN(n) ? '—' : n.toFixed(c).replace('.',','); }
+
+/* ---------- toast ---------- */
+let toastT;
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('on');
+  clearTimeout(toastT); toastT = setTimeout(()=>t.classList.remove('on'), 1900);
+}
+
+/* ==================================================================
+   TELA HOJE
+   ================================================================== */
+function renderHoje(){
+  document.getElementById('dLab').textContent  = rotuloDia(cursor);
+  document.getElementById('dLab2').textContent = rotuloData(cursor);
+  document.getElementById('nextD').disabled = cursor >= hojeISO();
+
+  const dia = S.dias[cursor] || {};
+  document.getElementById('meals').innerHTML = REFS.map(r=>`
+    <div class="meal">
+      <div class="meal-top">
+        <span class="meal-name">${r.nome}</span>
+        <span class="meal-hint">${r.hint}</span>
+      </div>
+      <div class="opts">
+        ${VALORES.map(o=>`
+          <button class="opt ${dia[r.id]===o.v?'on':''}" data-v="${o.v}" data-ref="${r.id}">
+            <span class="ic">${o.ic}</span>${o.lab}
+          </button>`).join('')}
+      </div>
+    </div>`).join('');
+
+  document.getElementById('meals').querySelectorAll('.opt').forEach(b=>{
+    b.onclick = ()=>{
+      const ref = b.dataset.ref, v = b.dataset.v;
+      if(!S.dias[cursor]) S.dias[cursor] = {};
+      // clicar de novo no mesmo valor desmarca
+      S.dias[cursor][ref] = (S.dias[cursor][ref]===v) ? null : v;
+      salvar(); renderHoje(); renderStreak();
+    };
+  });
+
+  document.getElementById('nota').value = dia.nota || '';
+  document.getElementById('mData').value = cursor;
+}
+
+document.getElementById('nota').addEventListener('input', e=>{
+  if(!S.dias[cursor]) S.dias[cursor] = {};
+  S.dias[cursor].nota = e.target.value;
+  salvar();
+});
+document.getElementById('prevD').onclick = ()=>{ cursor = addDias(cursor,-1); renderHoje(); };
+document.getElementById('nextD').onclick = ()=>{ if(cursor<hojeISO()){ cursor = addDias(cursor,1); renderHoje(); } };
+
+/* ---------- streak: dias consecutivos com algum registro ---------- */
+function temRegistro(iso){
+  const d = S.dias[iso]; if(!d) return false;
+  return REFS.some(r=>d[r.id]);
+}
+function calcStreak(){
+  let n = 0, c = hojeISO();
+  if(!temRegistro(c)) c = addDias(c,-1);   // ainda dá tempo de registrar hoje
+  while(temRegistro(c)){ n++; c = addDias(c,-1); }
+  return n;
+}
+function renderStreak(){
+  const n = calcStreak();
+  const dia = S.dias[cursor]||{};
+  const feitas = REFS.filter(r=>dia[r.id]).length;
+  document.getElementById('streakTop').textContent =
+    n>0 ? `🔥 ${n} ${n===1?'dia seguido':'dias seguidos'} · ${feitas}/4 hoje` : `${feitas}/4 refeições registradas`;
+}
+
+/* ---------- pesagem ---------- */
+document.getElementById('salvaMed').onclick = ()=>{
+  const g = id => { const v = parseFloat(document.getElementById(id).value); return isNaN(v)?null:v; };
+  const peso = g('mPeso');
+  if(!peso){ toast('Informe o peso'); return; }
+  const data = document.getElementById('mData').value || hojeISO();
+  const nova = {data, peso, gordura:g('mGord'), visceral:g('mVisc'), agua:g('mAgua'), musculo:g('mMusc')};
+  const i = S.medidas.findIndex(m=>m.data===data);
+  if(i>=0) S.medidas[i] = nova; else S.medidas.push(nova);
+  S.medidas.sort((a,b)=>a.data.localeCompare(b.data));
+  if(S.cfg.partida==null) S.cfg.partida = peso;   // origem da barra de progresso
+  salvar();
+  ['mPeso','mGord','mVisc','mAgua','mMusc'].forEach(id=>document.getElementById(id).value='');
+  toast('Pesagem registrada ✓');
+  renderPainel(); renderTabela();
+};
+
+/* ==================================================================
+   ANÁLISE
+   ================================================================== */
+
+/* média móvel de N dias sobre a série de pesagens (por data real) */
+function mediaMovel(meds, n=7){
+  return meds.map((m,i)=>{
+    const lim = addDias(m.data, -(n-1));
+    const jan = meds.slice(0,i+1).filter(x=>x.data>=lim);
+    return {data:m.data, v: jan.reduce((s,x)=>s+x.peso,0)/jan.length};
+  });
+}
+
+/* regressão linear simples -> kg por semana */
+function tendencia(serie){
+  if(serie.length<3) return null;
+  const x0 = parseISO(serie[0].data);
+  const pts = serie.map(p=>({x:(parseISO(p.data)-x0)/864e5, y:p.v}));
+  const n = pts.length;
+  const sx = pts.reduce((s,p)=>s+p.x,0), sy = pts.reduce((s,p)=>s+p.y,0);
+  const sxy = pts.reduce((s,p)=>s+p.x*p.y,0), sxx = pts.reduce((s,p)=>s+p.x*p.x,0);
+  const den = n*sxx - sx*sx;
+  if(Math.abs(den) < 1e-9) return null;
+  const a = (n*sxy - sx*sy)/den;            // kg por dia
+  return {porDia:a, porSemana:a*7};
+}
+
+/* aderência de um intervalo [ini, fim] */
+function aderencia(ini, fim){
+  let pts=0, tot=0, dias=0;
+  for(let c=ini; c<=fim; c=addDias(c,1)){
+    const d = S.dias[c]; if(!d) continue;
+    let achou=false;
+    REFS.forEach(r=>{ if(d[r.id]){ pts+=PESO_DE[d[r.id]]; tot++; achou=true; } });
+    if(achou) dias++;
+  }
+  return {pct: tot ? pts/tot*100 : null, registros:tot, dias};
+}
+
+function ultimaMedida(){ return S.medidas.length ? S.medidas[S.medidas.length-1] : null; }
+
+/* ==================================================================
+   PAINEL
+   ================================================================== */
+function renderPainel(){
+  const meds = S.medidas.slice().sort((a,b)=>a.data.localeCompare(b.data));
+  const box = document.getElementById('painelBody');
+  const ult = meds.length ? meds[meds.length-1] : null;
+  const h = hojeISO();
+
+  const sem  = aderencia(addDias(h,-6), h);
+  const mes  = aderencia(addDias(h,-29), h);
+  const strk = calcStreak();
+
+  document.getElementById('pnlSub').textContent =
+    ult ? `Última pesagem: ${rotuloData(ult.data)}` : 'Sem pesagens registradas';
+
+  const mm = mediaMovel(meds,7);
+  /* tendência só dos últimos 90 dias — a série inteira mistura platôs antigos com o momento atual */
+  const jan90 = mm.filter(p => diffDias(p.data, h) <= 90);
+  const tend = tendencia(jan90.length>=3 ? jan90 : mm.slice(-6));
+  const pesoAtual = mm.length ? mm[mm.length-1].v : null;
+  const alt = S.cfg.altura/100;
+  const imc = pesoAtual ? pesoAtual/(alt*alt) : null;
+
+  let out = '';
+
+  /* ---- KPIs ---- */
+  out += `<div class="kpis">
+    <div class="kpi">
+      <div class="k-lab">Aderência 7 dias</div>
+      <div class="k-val" style="color:${sem.pct==null?'var(--dim2)':corAder(sem.pct)}">${sem.pct==null?'—':Math.round(sem.pct)+'<small>%</small>'}</div>
+      <div class="k-sub">${sem.dias}/7 dias registrados</div>
+    </div>
+    <div class="kpi">
+      <div class="k-lab">Sequência</div>
+      <div class="k-val">${strk}<small> ${strk===1?'dia':'dias'}</small></div>
+      <div class="k-sub">${strk>0?'não quebre 🔥':'registre hoje pra começar'}</div>
+    </div>
+    <div class="kpi">
+      <div class="k-lab">Peso (média 7d)</div>
+      <div class="k-val">${pesoAtual?fmt(pesoAtual,1):'—'}<small> kg</small></div>
+      <div class="k-sub">${ult?'último: '+fmt(ult.peso,2)+' kg':'—'}</div>
+    </div>
+    <div class="kpi">
+      <div class="k-lab">Tendência</div>
+      <div class="k-val" style="color:${tend?(tend.porSemana<0?'var(--verde)':'var(--vermelho)'):'var(--dim2)'}">${tend?(tend.porSemana>0?'+':'')+fmt(tend.porSemana,2):'—'}<small> kg/sem</small></div>
+      <div class="k-sub">${tend?(jan90.length>=3?'últimos 90 dias':'últimas pesagens'):'precisa de 3 pesagens'}</div>
+    </div>
+  </div>`;
+
+  /* ---- metas ---- */
+  if(pesoAtual){
+    const p0 = S.cfg.partida || meds[0].peso;
+    out += `<h2>Progresso</h2><div class="card">`;
+    out += barraMeta('Sair da faixa "Obeso"', p0, pesoAtual, S.cfg.meta1, 'var(--amarelo)', tend);
+    out += `<div style="height:14px"></div>`;
+    out += barraMeta('Faixa saudável', p0, pesoAtual, S.cfg.meta2, 'var(--verde)', tend);
+    out += `<div class="hr"></div>
+      <div style="display:flex;justify-content:space-between;font-size:13px">
+        <span style="color:var(--dim)">IMC atual</span>
+        <b>${fmt(imc,1)} · ${faixaIMC(imc)}</b>
+      </div>`;
+    out += `</div>`;
+
+    /* ---- contexto histórico ---- */
+    const min = meds.reduce((a,b)=>b.peso<a.peso?b:a);
+    const desdeMin = diffDias(min.data, ult.data);
+    out += `<h2>Contexto</h2><div class="card">
+      <div style="display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:9px">
+        <span style="color:var(--dim)">Menor peso registrado</span>
+        <b>${fmt(min.peso,2)} kg <span style="color:var(--dim2);font-weight:400">· ${rotuloCurto(min.data)}/${String(parseISO(min.data).getFullYear()).slice(2)}</span></b>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:9px">
+        <span style="color:var(--dim)">Desde então</span>
+        <b style="color:${ult.peso>min.peso?'var(--vermelho)':'var(--verde)'}">${(ult.peso-min.peso>0?'+':'')}${fmt(ult.peso-min.peso,2)} kg em ${desdeMin} dias</b>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:13.5px">
+        <span style="color:var(--dim)">Dias desde a última pesagem</span>
+        <b style="color:${diffDias(ult.data,h)>21?'var(--amarelo)':'var(--txt)'}">${diffDias(ult.data,h)}</b>
+      </div>
+      <p class="note">${textoContexto(meds, min, ult, desdeMin)}</p>
+    </div>`;
+  }
+
+  /* ---- gráfico de peso ---- */
+  out += `<h2>Peso e tendência</h2><div class="card">`;
+  out += meds.length>=2 ? graficoPeso(meds, mm)
+       : `<div class="empty">Registre pelo menos 2 pesagens<br>para ver a curva de peso.</div>`;
+  out += `</div>`;
+
+  /* ---- índices derivados (com a ressalva honesta) ---- */
+  const comp = meds.filter(m=>m.gordura!=null);
+  out += `<h2>Índices da balança</h2><div class="card">`;
+  if(comp.length>=1){
+    const u = comp[comp.length-1];
+    const gKg = u.peso*u.gordura/100;
+    out += `<div class="kpis" style="margin-bottom:12px">
+      <div class="kpi" style="background:var(--card2)">
+        <div class="k-lab">Gordura estimada</div>
+        <div class="k-val" style="color:var(--vermelho);font-size:22px">${fmt(u.gordura,1)}<small>%</small></div>
+        <div class="k-sub">${fmt(gKg,1)} kg</div>
+      </div>
+      <div class="kpi" style="background:var(--card2)">
+        <div class="k-lab">Gordura visceral</div>
+        <div class="k-val" style="color:${u.visceral>=15?'var(--vermelho)':u.visceral>=10?'var(--amarelo)':'var(--verde)'};font-size:22px">${fmt(u.visceral,0)}</div>
+        <div class="k-sub">${u.visceral>=15?'alto':u.visceral>=10?'elevado':'desejável'}</div>
+      </div>
+    </div>
+    ${avisoBioimpedancia(comp)}`;
+  } else {
+    out += `<div class="empty">Sem dados de composição.</div>`;
+  }
+  out += `</div>`;
+
+  /* ---- heatmap ---- */
+  out += `<h2>Últimas 12 semanas</h2><div class="card">${heatmap()}</div>`;
+
+  /* ---- resumo 30 dias ---- */
+  if(mes.pct!=null){
+    out += `<h2>Últimos 30 dias</h2><div class="card">
+      <div style="display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:9px">
+        <span style="color:var(--dim)">Aderência média</span><b style="color:${corAder(mes.pct)}">${Math.round(mes.pct)}%</b>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:9px">
+        <span style="color:var(--dim)">Dias registrados</span><b>${mes.dias} de 30</b>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:13.5px">
+        <span style="color:var(--dim)">Refeições marcadas</span><b>${mes.registros}</b>
+      </div>
+      <p class="note">${mensagem(mes)}</p>
+    </div>`;
+  }
+
+  box.innerHTML = out;
+}
+
+/* Correlação de Pearson entre duas séries */
+function pearson(xs, ys){
+  const n = xs.length; if(n<3) return null;
+  const mx = xs.reduce((a,b)=>a+b,0)/n, my = ys.reduce((a,b)=>a+b,0)/n;
+  let num=0, dx=0, dy=0;
+  for(let i=0;i<n;i++){ const a=xs[i]-mx, b=ys[i]-my; num+=a*b; dx+=a*a; dy+=b*b; }
+  const den = Math.sqrt(dx*dy);
+  return den<1e-12 ? null : num/den;
+}
+
+/* Muitas balanças de bioimpedância doméstica não medem composição de forma
+   independente: derivam tudo de peso/altura/idade/sexo. Isso é detectável —
+   pesos iguais devolvem valores iguais e a correlação com o peso fica ~1. */
+function avisoBioimpedancia(comp){
+  const r = pearson(comp.map(m=>m.peso), comp.map(m=>m.gordura));
+  if(r==null) return '';
+  const rs = Math.abs(r).toFixed(3).replace('.',',');
+
+  // pesos repetidos em datas diferentes devolveram a MESMA gordura?
+  const porPeso = {}; let rep=0, div=0;
+  comp.forEach(m=>{
+    const k = m.peso.toFixed(2);
+    if(k in porPeso){ rep++; if(porPeso[k]!==m.gordura) div++; }
+    else porPeso[k] = m.gordura;
+  });
+
+  if(Math.abs(r) > 0.97){
+    const prova = rep>0 && div===0
+      ? ` E a prova direta: ${rep} ${rep===1?'peso repetido':'pesos repetidos'} em datas diferentes ${rep===1?'devolveu':'devolveram'} exatamente a mesma gordura — medição real varia com hidratação e horário, fórmula não varia.`
+      : '';
+    return `<p class="note"><b>Leia com ressalva.</b> Nos seus dados, a % de gordura tem correlação de <b>${rs}</b> com o peso — ou seja, não é um segundo indicador, é o peso reescalado.${prova} Balança doméstica costuma calcular composição por fórmula sobre peso, altura, idade e sexo. <b>Para medida de verdade, use fita métrica na cintura</b>: custa 10 segundos e responde ao que a balança não vê.</p>`;
+  }
+  return `<p class="note">Correlação da % de gordura com o peso: <b>${rs}</b>. Abaixo de 0,97 a balança provavelmente está medindo algo além do peso — vale acompanhar como indicador próprio.</p>`;
+}
+
+function textoContexto(meds, min, ult, dias){
+  const d = ult.peso - min.peso;
+  if(d <= 0.5) return 'Você está no seu melhor patamar registrado. O trabalho aqui é manter, não apertar.';
+  const kcal = Math.round(d*7700/Math.max(dias,1));
+  return `São ${fmt(d,1)} kg acima do seu melhor momento, acumulados ao longo de ${dias} dias — o equivalente a um excedente médio de cerca de <b>${kcal} kcal por dia</b>. Vale ler isso com atenção: não foi descontrole, foi um desvio pequeno e constante, do tamanho de um lanche extra por dia. É importante porque a correção também é pequena. Você não precisa de dieta radical — precisa reverter algumas centenas de calorias diárias e sustentar isso. E você já esteve nesse peso: ${fmt(min.peso,1)} kg não é uma meta hipotética, é um lugar onde você já esteve.`;
+}
+
+function corAder(p){ return p>=80?'var(--verde)':p>=60?'var(--amarelo)':'var(--vermelho)'; }
+function faixaIMC(i){
+  if(i==null) return '—';
+  return i<18.5?'abaixo do peso':i<25?'saudável':i<30?'sobrepeso':i<35?'obesidade grau I':i<40?'obesidade grau II':'obesidade grau III';
+}
+
+function barraMeta(titulo, inicio, atual, meta, cor, tend){
+  const total = inicio - meta;
+  const feito = inicio - atual;
+  const pct = total>0 ? Math.max(0, Math.min(100, feito/total*100)) : (atual<=meta?100:0);
+  const falta = atual - meta;
+  let prev = '';
+  if(tend && tend.porSemana < -0.05 && falta > 0){
+    const sem = falta / (-tend.porSemana);
+    const d = new Date(); d.setDate(d.getDate() + Math.round(sem*7));
+    prev = ` · previsão ${MESES[d.getMonth()]}/${String(d.getFullYear()).slice(2)}`;
+  }
+  return `<div class="goal">
+    <div class="goal-top">
+      <span style="color:var(--dim)">${titulo} <b style="color:var(--txt)">${fmt(meta,1)} kg</b></span>
+      <b style="color:${falta<=0?'var(--verde)':'var(--txt)'}">${falta<=0?'atingida ✓':'faltam '+fmt(falta,1)+' kg'}</b>
+    </div>
+    <div class="bar"><i style="width:${pct}%;background:${cor}"></i></div>
+    <div style="font-size:11px;color:var(--dim2);margin-top:5px">${Math.round(pct)}% do caminho${prev}</div>
+  </div>`;
+}
+
+function mensagem(a){
+  if(a.dias<7) return 'Ainda são poucos dias pra tirar conclusão. O valor aqui vem da consistência, não da perfeição — registre mesmo nos dias ruins, principalmente nos dias ruins.';
+  if(a.pct>=80) return 'Aderência alta e consistente. Se o peso não estiver caindo neste ritmo, o problema não é disciplina — é a calibragem do plano. Vale ajustar as porções antes de apertar mais.';
+  if(a.pct>=60) return 'Aderência razoável. Olhe o mapa acima: se os vermelhos se concentram em dias específicos da semana, o ajuste é nesses dias — não no plano inteiro.';
+  return 'Aderência baixa. Normalmente isso quer dizer que o plano está restritivo demais pra rotina real, não que faltou força de vontade. Um plano de 70% seguido bate um de 100% abandonado.';
+}
+
+/* ---------- gráfico de peso (SVG) ---------- */
+function graficoPeso(meds, mm){
+  const W=560, H=210, ml=44, mr=10, mt=14, mb=26;
+  const d0 = parseISO(meds[0].data), d1 = parseISO(meds[meds.length-1].data);
+  const span = Math.max(1, (d1-d0)/864e5);
+  const vals = meds.map(m=>m.peso).concat(mm.map(m=>m.v));
+  let lo = Math.min(...vals), hi = Math.max(...vals);
+  const pad = Math.max(0.8, (hi-lo)*0.18); lo-=pad; hi+=pad;
+  const X = iso => ml + ((parseISO(iso)-d0)/864e5)/span*(W-ml-mr);
+  const Y = v   => mt + (1-(v-lo)/(hi-lo))*(H-mt-mb);
+
+  let g = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Curva de peso">`;
+  for(let i=0;i<=3;i++){
+    const v = lo+(hi-lo)*i/3, y = Y(v);
+    g += `<line x1="${ml}" y1="${y.toFixed(1)}" x2="${W-mr}" y2="${y.toFixed(1)}" stroke="#282d38" stroke-width="1"/>
+          <text x="${ml-7}" y="${(y+4).toFixed(1)}" fill="#6b7280" font-size="10" text-anchor="end">${v.toFixed(1)}</text>`;
+  }
+  // metas dentro da janela
+  [[S.cfg.meta1,'#f0b429','meta 1'],[S.cfg.meta2,'#22c55e','meta 2']].forEach(([m,c,l])=>{
+    if(m>lo && m<hi){
+      g += `<line x1="${ml}" y1="${Y(m).toFixed(1)}" x2="${W-mr}" y2="${Y(m).toFixed(1)}" stroke="${c}" stroke-width="1" stroke-dasharray="4 4" opacity=".6"/>
+            <text x="${W-mr}" y="${(Y(m)-5).toFixed(1)}" fill="${c}" font-size="9.5" text-anchor="end" opacity=".85">${l}</text>`;
+    }
+  });
+  // pontos brutos
+  meds.forEach(m=>{ g += `<circle cx="${X(m.data).toFixed(1)}" cy="${Y(m.peso).toFixed(1)}" r="2.6" fill="#4b9fff" opacity=".38"/>`; });
+  // média móvel
+  if(mm.length>=2){
+    g += `<polyline points="${mm.map(p=>X(p.data).toFixed(1)+','+Y(p.v).toFixed(1)).join(' ')}" fill="none" stroke="#4b9fff" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>`;
+    const u = mm[mm.length-1];
+    g += `<circle cx="${X(u.data).toFixed(1)}" cy="${Y(u.v).toFixed(1)}" r="4.5" fill="#4b9fff" stroke="#0f1115" stroke-width="2"/>`;
+  }
+  g += `<text x="${ml}" y="${H-6}" fill="#6b7280" font-size="10">${rotuloCurto(meds[0].data)}</text>
+        <text x="${W-mr}" y="${H-6}" fill="#6b7280" font-size="10" text-anchor="end">${rotuloCurto(meds[meds.length-1].data)}</text></svg>`;
+  g += `<div class="legend">
+          <span><i class="dot" style="background:#4b9fff;opacity:.38"></i>pesagem</span>
+          <span><i class="dot" style="background:#4b9fff"></i>média móvel 7 dias</span>
+        </div>
+        <p class="note">A balança oscila até 1 kg só por água e sal. Siga a linha cheia, não os pontos — é ela que diz se está funcionando.</p>`;
+  return g;
+}
+
+function rotuloCurto(iso){ const d=parseISO(iso); return `${d.getDate()}/${MESES[d.getMonth()]}`; }
+
+/* ---------- heatmap 12 semanas ---------- */
+function heatmap(){
+  const h = hojeISO();
+  const fimSem = addDias(h, 6-parseISO(h).getDay());   // sábado da semana atual
+  const ini = addDias(fimSem, -(12*7-1));
+  let html = `<div class="heat">${['D','S','T','Q','Q','S','S'].map(d=>`<div class="hd">${d}</div>`).join('')}`;
+  for(let c=ini; c<=fimSem; c=addDias(c,1)){
+    const d = S.dias[c];
+    const marc = d ? REFS.map(r=>d[r.id]).filter(Boolean) : [];
+    let bg='', cls='c', tit = rotuloData(c);
+    if(marc.length){
+      const sc = marc.reduce((s,v)=>s+PESO_DE[v],0)/marc.length;
+      const cor = sc>=0.85?'34,197,94' : sc>=0.5?'240,180,41' : '239,68,68';
+      const op = 0.32 + 0.68*(marc.length/REFS.length);
+      bg = `background:rgba(${cor},${op.toFixed(2)})`;
+      tit += ` — ${marc.length}/4 · ${Math.round(sc*100)}%`;
+    } else if(c<=h){
+      cls += ' f'; tit += ' — sem registro';
+    }
+    html += `<div class="${cls}" style="${bg}" title="${tit}"></div>`;
+  }
+  html += `</div><div class="legend">
+      <span><i class="dot" style="background:rgba(34,197,94,.9)"></i>bom</span>
+      <span><i class="dot" style="background:rgba(240,180,41,.9)"></i>médio</span>
+      <span><i class="dot" style="background:rgba(239,68,68,.9)"></i>ruim</span>
+      <span><i class="dot" style="background:#1e222b;border:1px solid #282d38"></i>sem registro</span>
+    </div>
+    <p class="note">Intensidade da cor = quantas refeições você registrou. Padrões aparecem aqui: se a coluna de sábado vive vermelha, o ajuste é no sábado.</p>`;
+  return html;
+}
+
+/* ==================================================================
+   DADOS
+   ================================================================== */
+function renderTabela(){
+  const box = document.getElementById('tabMed');
+  if(!S.medidas.length){ box.innerHTML = `<div class="empty">Nenhuma pesagem registrada.</div>`; return; }
+  const ms = S.medidas.slice().reverse();
+  box.innerHTML = `<div style="overflow-x:auto"><table>
+    <tr><th>Data</th><th>Peso</th><th>Gord.%</th><th>Visc.</th><th></th></tr>
+    ${ms.map(m=>`<tr>
+      <td>${rotuloCurto(m.data)}/${String(parseISO(m.data).getFullYear()).slice(2)}</td>
+      <td class="num">${fmt(m.peso,2)}</td>
+      <td class="num">${m.gordura!=null?fmt(m.gordura,1):'—'}</td>
+      <td class="num">${m.visceral!=null?fmt(m.visceral,0):'—'}</td>
+      <td style="text-align:right"><button class="del" data-d="${m.data}">✕</button></td>
+    </tr>`).join('')}
+  </table></div>`;
+  box.querySelectorAll('.del').forEach(b=>{
+    b.onclick = ()=>{
+      if(!confirm('Apagar a pesagem de '+rotuloData(b.dataset.d)+'?')) return;
+      S.medidas = S.medidas.filter(m=>m.data!==b.dataset.d);
+      salvar(); renderTabela(); renderPainel(); toast('Pesagem apagada');
+    };
+  });
+}
+
+function renderCfg(){
+  document.getElementById('cfgAlt').value = S.cfg.altura;
+  document.getElementById('cfgM1').value  = S.cfg.meta1;
+  document.getElementById('cfgM2').value  = S.cfg.meta2;
+  document.getElementById('cfgTmb').value = S.cfg.tmb;
+}
+document.getElementById('cfgAlt').addEventListener('input', e=>{
+  const a = parseFloat(e.target.value)/100;
+  if(a>1 && a<2.5){
+    document.getElementById('cfgM1').value = (29.9*a*a).toFixed(1);
+    document.getElementById('cfgM2').value = (24.9*a*a).toFixed(1);
+  }
+});
+document.getElementById('salvaCfg').onclick = ()=>{
+  const g = id => parseFloat(document.getElementById(id).value);
+  S.cfg = {
+    altura: g('cfgAlt')||S.cfg.altura,
+    meta1:  g('cfgM1') ||S.cfg.meta1,
+    meta2:  g('cfgM2') ||S.cfg.meta2,
+    tmb:    g('cfgTmb')||S.cfg.tmb
+  };
+  salvar(); renderPainel(); toast('Metas salvas ✓');
+};
+
+/* ---------- backup ---------- */
+document.getElementById('expBtn').onclick = ()=>{
+  const blob = new Blob([JSON.stringify(S,null,2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `painel-alimentar-${hojeISO()}.json`;
+  a.click(); URL.revokeObjectURL(a.href);
+  toast('Backup exportado ✓');
+};
+document.getElementById('impBtn').onclick = ()=>document.getElementById('impFile').click();
+document.getElementById('impFile').onchange = e=>{
+  const f = e.target.files[0]; if(!f) return;
+  const rd = new FileReader();
+  rd.onload = ev=>{
+    try{
+      const o = JSON.parse(ev.target.result);
+      if(!o.dias || !o.medidas) throw new Error('formato');
+      if(!confirm('Isso substitui todos os dados atuais. Continuar?')) return;
+      S = {...padrao(), ...o, cfg:{...padrao().cfg, ...(o.cfg||{})}};
+      salvar(); renderTudo(); toast('Backup importado ✓');
+    }catch(err){ alert('Arquivo inválido ou corrompido.'); }
+  };
+  rd.readAsText(f);
+  e.target.value = '';
+};
+document.getElementById('zerar').onclick = ()=>{
+  if(!confirm('Apagar TODOS os dados? Exporte um backup antes — isso não tem volta.')) return;
+  if(!confirm('Tem certeza mesmo?')) return;
+  localStorage.removeItem(KEY); S = padrao(); renderTudo(); toast('Dados apagados');
+};
+
+/* ==================================================================
+   NAVEGAÇÃO
+   ================================================================== */
+document.querySelectorAll('nav button').forEach(b=>{
+  b.onclick = ()=>{
+    document.querySelectorAll('nav button').forEach(x=>x.classList.remove('on'));
+    document.querySelectorAll('.page').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    document.getElementById('p-'+b.dataset.p).classList.add('on');
+    if(b.dataset.p==='painel') renderPainel();
+    if(b.dataset.p==='dados'){ renderTabela(); renderCfg(); }
+    window.scrollTo(0,0);
+  };
+});
+
+function renderTudo(){ renderHoje(); renderStreak(); renderPainel(); renderTabela(); renderCfg(); }
+
+/* vira o dia enquanto o app está aberto */
+document.addEventListener('visibilitychange', ()=>{
+  if(!document.hidden && cursor < hojeISO()){ cursor = hojeISO(); renderHoje(); renderStreak(); }
+});
+
+renderTudo();
+</script>
+</body>
+</html>

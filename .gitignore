@@ -1,0 +1,5 @@
+# Dados pessoais de saúde — nunca versionar.
+meus-dados.json
+*-dados.json
+painel-alimentar-*.json
+backup*.json
