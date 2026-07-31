@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0f1115">
 <title>Painel Alimentar</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🟢</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍽️</text></svg>">
 <style>
 :root{
   --bg:#0f1115; --card:#171a21; --card2:#1e222b; --line:#282d38;
@@ -19,8 +19,7 @@ html,body{margin:0;padding:0}
 body{
   background:var(--bg); color:var(--txt);
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  font-size:16px; line-height:1.45;
-  padding-bottom:86px;
+  font-size:16px; line-height:1.45; padding-bottom:86px;
   -webkit-font-smoothing:antialiased;
 }
 .wrap{max-width:620px;margin:0 auto;padding:16px 14px 0}
@@ -28,100 +27,63 @@ h1{font-size:19px;margin:0;font-weight:650;letter-spacing:-.2px}
 h2{font-size:13px;margin:26px 0 10px;color:var(--dim);text-transform:uppercase;letter-spacing:.7px;font-weight:600}
 .sub{color:var(--dim);font-size:13px;margin:2px 0 0}
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:12px}
-
-/* ---------- topo ---------- */
 header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px}
 
-/* ---------- navegação de dia ---------- */
 .daynav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:14px}
-.daynav button{
-  background:var(--card);border:1px solid var(--line);color:var(--txt);
-  width:42px;height:42px;border-radius:12px;font-size:19px;cursor:pointer;flex:none
-}
+.daynav button{background:var(--card);border:1px solid var(--line);color:var(--txt);
+  width:42px;height:42px;border-radius:12px;font-size:19px;cursor:pointer;flex:none}
 .daynav button:disabled{opacity:.3}
 .daylabel{flex:1;text-align:center}
 .daylabel .d1{font-size:16px;font-weight:600}
 .daylabel .d2{font-size:12px;color:var(--dim)}
 
-/* ---------- refeições ---------- */
-.meal{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;margin-bottom:10px}
-.meal-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.meal-name{font-weight:600;font-size:15px}
-.meal-hint{font-size:11px;color:var(--dim2)}
-.opts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.opt{
-  border:1.5px solid var(--line);background:var(--card2);color:var(--dim);
-  border-radius:11px;padding:13px 4px;font-size:12px;font-weight:600;
-  cursor:pointer;transition:.12s;display:flex;flex-direction:column;align-items:center;gap:5px;
-  font-family:inherit
-}
-.opt .ic{font-size:21px;line-height:1}
-.opt:active{transform:scale(.96)}
-.opt.on[data-v="v"]{background:rgba(34,197,94,.16);border-color:var(--verde);color:var(--verde)}
-.opt.on[data-v="a"]{background:rgba(240,180,41,.16);border-color:var(--amarelo);color:var(--amarelo)}
-.opt.on[data-v="r"]{background:rgba(239,68,68,.16);border-color:var(--vermelho);color:var(--vermelho)}
+/* ---------- contador do dia ---------- */
+.total{text-align:center;padding:6px 0 2px}
+.total .big{font-size:46px;font-weight:700;letter-spacing:-1.6px;line-height:1}
+.total .big small{font-size:17px;font-weight:600;color:var(--dim);letter-spacing:0}
+.total .meta{font-size:13px;color:var(--dim);margin-top:5px}
+.bar{height:10px;background:var(--card2);border-radius:99px;overflow:hidden;margin:13px 0 8px}
+.bar i{display:block;height:100%;border-radius:99px;transition:width .45s}
+.restante{font-size:13px;text-align:center;font-weight:600}
 
-.skip{
-  width:100%;margin-top:8px;background:none;border:1px dashed var(--line);color:var(--dim2);
-  border-radius:9px;padding:8px;font-size:11.5px;cursor:pointer;font-family:inherit
-}
-.skip.on{border-style:solid;border-color:var(--dim2);color:var(--txt);background:var(--card2)}
-.qmark{
-  background:var(--card2);border:1px solid var(--line);color:var(--dim);
-  width:19px;height:19px;border-radius:50%;font-size:11px;cursor:pointer;
-  padding:0;margin-left:5px;font-family:inherit;vertical-align:middle;line-height:1
-}
-.crit{margin-top:10px;padding:10px;background:var(--card2);border-radius:9px;font-size:12.5px;line-height:1.55}
-.crit div{margin-bottom:5px}
-.crit div:last-child{margin-bottom:0}
-.warn{border-color:var(--amarelo);background:rgba(240,180,41,.07)}
-.refbox{background:var(--card2);border:1px solid var(--line);border-radius:11px;padding:12px;margin-bottom:10px}
-.refhead{display:flex;align-items:center;gap:9px;margin-bottom:9px}
-.refhead input[type=text]{flex:1;font-size:14px;padding:8px 10px}
-.sw{position:relative;width:40px;height:23px;flex:none;cursor:pointer}
-.sw input{opacity:0;width:0;height:0;position:absolute}
-.sw i{position:absolute;inset:0;background:var(--line);border-radius:99px;transition:.18s}
-.sw i:before{content:"";position:absolute;width:17px;height:17px;left:3px;top:3px;background:var(--dim);border-radius:50%;transition:.18s}
-.sw input:checked + i{background:rgba(34,197,94,.35)}
-.sw input:checked + i:before{transform:translateX(17px);background:var(--verde)}
-.critrow{display:flex;align-items:flex-start;gap:8px;margin-top:7px}
-.critrow span{font-size:15px;line-height:1.9;flex:none}
-.critrow input{font-size:13px;padding:8px 10px}
+/* ---------- refeições do dia ---------- */
+.ref{display:flex;align-items:center;gap:11px;padding:11px 0;border-top:1px solid var(--line)}
+.ref:first-child{border-top:none}
+.ref .ic{font-size:19px;flex:none;width:24px;text-align:center}
+.ref .info{flex:1;min-width:0}
+.ref .nm{font-size:14.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ref .hr{font-size:11.5px;color:var(--dim2)}
+.ref .kc{font-size:16px;font-weight:650;font-variant-numeric:tabular-nums;flex:none}
+.ref .rm{background:none;border:none;color:var(--dim2);cursor:pointer;font-size:16px;padding:3px 2px;flex:none}
 
-/* ---------- pesagem ---------- */
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
 label{display:block;font-size:11px;color:var(--dim);margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px;font-weight:600}
-input,textarea,select{
-  width:100%;background:var(--card2);border:1px solid var(--line);color:var(--txt);
-  border-radius:10px;padding:11px 12px;font-size:16px;font-family:inherit
-}
-input:focus,textarea:focus{outline:none;border-color:var(--azul)}
-textarea{resize:vertical;min-height:56px;font-size:14px}
-.btn{
-  background:var(--azul);color:#fff;border:none;border-radius:11px;
-  padding:13px;font-size:15px;font-weight:600;width:100%;cursor:pointer;font-family:inherit
-}
+input,textarea,select{width:100%;background:var(--card2);border:1px solid var(--line);color:var(--txt);
+  border-radius:10px;padding:11px 12px;font-size:16px;font-family:inherit}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--azul)}
+textarea{resize:vertical;min-height:52px;font-size:14px}
+.btn{background:var(--azul);color:#fff;border:none;border-radius:11px;padding:13px;
+  font-size:15px;font-weight:600;width:100%;cursor:pointer;font-family:inherit}
 .btn:active{opacity:.8}
 .btn.ghost{background:var(--card2);color:var(--txt);border:1px solid var(--line)}
 .btn.danger{background:var(--card2);color:var(--vermelho);border:1px solid var(--line)}
 .btn.sm{padding:10px;font-size:13px}
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px}
+.chip{background:var(--card2);border:1px solid var(--line);color:var(--dim);border-radius:99px;
+  padding:7px 13px;font-size:12.5px;cursor:pointer;font-family:inherit}
+.chip.on{background:rgba(75,159,255,.16);border-color:var(--azul);color:var(--azul)}
 
-/* ---------- KPIs ---------- */
 .kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .kpi{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:13px}
 .kpi .k-lab{font-size:10.5px;color:var(--dim);text-transform:uppercase;letter-spacing:.6px;font-weight:600}
-.kpi .k-val{font-size:26px;font-weight:680;letter-spacing:-.8px;margin-top:3px;line-height:1.1}
+.kpi .k-val{font-size:25px;font-weight:680;letter-spacing:-.8px;margin-top:3px;line-height:1.1}
 .kpi .k-sub{font-size:11.5px;color:var(--dim2);margin-top:2px}
-.k-val small{font-size:14px;font-weight:600;color:var(--dim)}
+.k-val small{font-size:13px;font-weight:600;color:var(--dim)}
 
-/* ---------- progresso ---------- */
 .goal{margin-bottom:16px}
 .goal-top{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;margin-bottom:7px}
-.goal-top b{font-size:14px}
-.bar{height:9px;background:var(--card2);border-radius:99px;overflow:hidden}
-.bar i{display:block;height:100%;border-radius:99px;transition:width .5s}
 
-/* ---------- heatmap ---------- */
 .heat{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
 .heat .hd{font-size:9px;color:var(--dim2);text-align:center;padding-bottom:2px}
 .heat .c{aspect-ratio:1;border-radius:4px;background:var(--card2);border:1px solid transparent}
@@ -129,39 +91,37 @@ textarea{resize:vertical;min-height:56px;font-size:14px}
 .legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--dim);margin-top:10px}
 .legend span{display:flex;align-items:center;gap:5px}
 .dot{width:9px;height:9px;border-radius:3px;display:inline-block}
-
 svg{display:block;width:100%;height:auto;overflow:visible}
 
-/* ---------- tabs ---------- */
-nav{
-  position:fixed;bottom:0;left:0;right:0;background:rgba(15,17,21,.94);
+nav{position:fixed;bottom:0;left:0;right:0;background:rgba(15,17,21,.94);
   backdrop-filter:blur(12px);border-top:1px solid var(--line);
-  display:flex;padding:8px 6px calc(8px + env(safe-area-inset-bottom));z-index:50
-}
-nav button{
-  flex:1;background:none;border:none;color:var(--dim2);padding:6px 2px;
-  font-size:10.5px;font-weight:600;cursor:pointer;display:flex;flex-direction:column;
-  align-items:center;gap:3px;font-family:inherit;letter-spacing:.2px
-}
+  display:flex;padding:8px 6px calc(8px + env(safe-area-inset-bottom));z-index:50}
+nav button{flex:1;background:none;border:none;color:var(--dim2);padding:6px 2px;font-size:10.5px;
+  font-weight:600;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;font-family:inherit}
 nav button .ic{font-size:19px;line-height:1}
 nav button.on{color:var(--azul)}
 .page{display:none}
 .page.on{display:block}
 
-.empty{color:var(--dim2);font-size:13px;text-align:center;padding:26px 12px;line-height:1.6}
+.empty{color:var(--dim2);font-size:13px;text-align:center;padding:24px 12px;line-height:1.6}
 .hr{height:1px;background:var(--line);margin:16px 0}
 .note{font-size:12px;color:var(--dim2);line-height:1.55;margin-top:8px}
-.toast{
-  position:fixed;bottom:96px;left:50%;transform:translateX(-50%) translateY(14px);
-  background:var(--verde);color:#062e13;padding:10px 20px;border-radius:99px;
-  font-size:13.5px;font-weight:650;opacity:0;transition:.25s;pointer-events:none;z-index:99;white-space:nowrap
-}
+.warn{border-color:var(--amarelo);background:rgba(240,180,41,.07)}
+.toast{position:fixed;bottom:96px;left:50%;transform:translateX(-50%) translateY(14px);
+  background:var(--verde);color:#062e13;padding:10px 20px;border-radius:99px;font-size:13.5px;
+  font-weight:650;opacity:0;transition:.25s;pointer-events:none;z-index:99;white-space:nowrap}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 table{width:100%;border-collapse:collapse;font-size:13px}
 th{text-align:left;color:var(--dim);font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;padding:0 6px 8px 0;font-weight:600}
 td{padding:8px 6px 8px 0;border-top:1px solid var(--line)}
 td.num{font-variant-numeric:tabular-nums}
 .del{background:none;border:none;color:var(--dim2);cursor:pointer;font-size:15px;padding:2px 4px}
+.rowbtn{display:flex;gap:8px}
+.rowbtn .btn{flex:1}
+details{background:var(--card2);border-radius:10px;padding:11px 13px;margin-top:10px}
+summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--dim)}
+details p{font-size:12.5px;color:var(--dim2);line-height:1.6;margin:9px 0 0}
+code{background:var(--bg);padding:2px 6px;border-radius:5px;font-size:12px}
 </style>
 </head>
 <body>
@@ -171,47 +131,65 @@ td.num{font-variant-numeric:tabular-nums}
 <!-- ============ HOJE ============ -->
 <section class="page on" id="p-hoje">
   <header>
-    <div>
-      <h1>Painel Alimentar</h1>
-      <p class="sub" id="streakTop">—</p>
-    </div>
+    <div><h1>Painel Alimentar</h1><p class="sub" id="streakTop">—</p></div>
   </header>
 
   <div class="daynav">
     <button id="prevD">‹</button>
-    <div class="daylabel">
-      <div class="d1" id="dLab">—</div>
-      <div class="d2" id="dLab2">—</div>
-    </div>
+    <div class="daylabel"><div class="d1" id="dLab">—</div><div class="d2" id="dLab2">—</div></div>
     <button id="nextD">›</button>
   </div>
 
-  <div class="card warn" id="semCrit" hidden>
-    <b>Defina seu plano primeiro.</b>
-    <p style="margin:7px 0 11px;font-size:13px;line-height:1.5">
-      Sem um critério escrito, "no plano" vira chute e o painel não mede nada.
-      Leva 5 minutos, e é uma vez só.
-    </p>
-    <button class="btn sm" id="irPlano">Definir critérios das refeições</button>
+  <div class="card">
+    <div class="total">
+      <div class="big" id="totKcal">0<small> kcal</small></div>
+      <div class="meta" id="totMeta">—</div>
+    </div>
+    <div class="bar"><i id="totBar" style="width:0%"></i></div>
+    <div class="restante" id="totRest">—</div>
   </div>
 
-  <div id="meals"></div>
+  <div class="card" id="listaRefs"></div>
+
+  <h2>Adicionar refeição</h2>
+  <div class="card">
+    <div class="chips" id="chipsRef"></div>
+    <div class="grid2">
+      <div><label for="inKcal">Calorias *</label><input id="inKcal" type="number" inputmode="numeric" step="10" placeholder="850"></div>
+      <div><label for="inHora">Hora</label><input id="inHora" type="time"></div>
+    </div>
+    <div style="height:10px"></div>
+    <label for="inNome">Nome (opcional)</label>
+    <input id="inNome" type="text" placeholder="Ex.: almoço, marmita, lanche">
+    <div style="height:12px"></div>
+    <button class="btn" id="addRef">Adicionar</button>
+    <div style="height:8px"></div>
+    <button class="btn ghost sm" id="copiaPrompt">📋 Copiar prompt pra estimar pela foto</button>
+    <details>
+      <summary>Como usar com o GPT</summary>
+      <p>Toque em copiar acima, abra o GPT (ou o Claude), <b>cole o texto junto com a foto do prato</b>
+      e ele devolve só o número. Traga esse número pra cá.</p>
+      <p>Estimativa por foto erra uns 20–30% pra mais ou pra menos. Isso atrapalha menos do que parece:
+      o que importa é o erro ser parecido todo dia. O painel calcula seu gasto real a partir do que você
+      registra e do que a balança mostra — se a estimativa puxa sempre pra baixo, o gasto calculado desce
+      junto e a meta se corrige sozinha. Por isso: <b>use sempre a mesma ferramenta e o mesmo prompt</b>.</p>
+    </details>
+  </div>
 
   <div class="card">
     <label for="nota">Observação do dia (opcional)</label>
-    <textarea id="nota" placeholder="Ex.: aniversário no trabalho, dormi mal, treinei pesado…"></textarea>
+    <textarea id="nota" placeholder="Ex.: treinei, dormi mal, evento no trabalho…"></textarea>
   </div>
 
   <h2>Pesagem</h2>
   <div class="card">
-    <p class="note" style="margin:0 0 12px">Só quando subir na balança. 1× por semana já basta — o painel usa média móvel pra filtrar o ruído do dia a dia.</p>
+    <p class="note" style="margin:0 0 12px">1× por semana basta. O peso é o que calibra seu gasto real —
+    sem ele, o painel só sabe estimar por fórmula.</p>
     <div class="grid2">
       <div><label for="mPeso">Peso (kg) *</label><input id="mPeso" type="number" step="0.05" inputmode="decimal" placeholder="80.5"></div>
-      <div><label for="mGord">Gordura (%)</label><input id="mGord" type="number" step="0.1" inputmode="decimal" placeholder="22.0"></div>
-      <div><label for="mVisc">Gordura visceral</label><input id="mVisc" type="number" step="0.1" inputmode="decimal" placeholder="10"></div>
-      <div><label for="mAgua">Água (%)</label><input id="mAgua" type="number" step="0.1" inputmode="decimal" placeholder="55.0"></div>
-      <div><label for="mMusc">Massa muscular (kg)</label><input id="mMusc" type="number" step="0.1" inputmode="decimal" placeholder="55.0"></div>
       <div><label for="mData">Data</label><input id="mData" type="date"></div>
+      <div><label for="mGord">Gordura (%)</label><input id="mGord" type="number" step="0.1" inputmode="decimal" placeholder="22.0"></div>
+      <div><label for="mVisc">Visceral</label><input id="mVisc" type="number" step="0.1" inputmode="decimal" placeholder="10"></div>
     </div>
     <div style="height:12px"></div>
     <button class="btn" id="salvaMed">Registrar pesagem</button>
@@ -226,41 +204,56 @@ td.num{font-variant-numeric:tabular-nums}
 
 <!-- ============ DADOS ============ -->
 <section class="page" id="p-dados">
-  <header><div><h1>Dados</h1><p class="sub">Histórico, metas e backup</p></div></header>
+  <header><div><h1>Dados</h1><p class="sub">Perfil, lembretes e backup</p></div></header>
 
-  <h2 id="secPlano">Minhas refeições</h2>
-  <div class="card">
-    <p class="note" style="margin:0 0 12px">
-      Desligue o que não faz parte da sua rotina — se você não toma café da manhã,
-      esse card some da tela e para de te cobrar. E escreva o critério de cada cor:
-      é ele que transforma "achei que foi ok" em medida. Critério bom é o que você
-      decide em 2 segundos, sem pensar.
-    </p>
-    <div id="refsEditor"></div>
-    <button class="btn ghost sm" id="salvaRefs">Salvar refeições e critérios</button>
-    <div style="height:8px"></div>
-    <button class="btn ghost sm" id="exemploCrit">Preencher com exemplos pra eu editar</button>
-  </div>
-
-  <h2>Metas</h2>
+  <h2>Perfil</h2>
   <div class="card">
     <div class="grid2">
-      <div><label for="cfgAlt">Altura (cm)</label><input id="cfgAlt" type="number" step="1" inputmode="numeric"></div>
-      <div><label for="cfgM1">Meta 1 — kg</label><input id="cfgM1" type="number" step="0.1" inputmode="decimal"></div>
-      <div><label for="cfgM2">Meta 2 — kg</label><input id="cfgM2" type="number" step="0.1" inputmode="decimal"></div>
-      <div><label for="cfgTmb">Metabolismo basal</label><input id="cfgTmb" type="number" step="1" inputmode="numeric"></div>
+      <div><label for="cfgAlt">Altura (cm)</label><input id="cfgAlt" type="number" inputmode="numeric"></div>
+      <div><label for="cfgIdade">Idade</label><input id="cfgIdade" type="number" inputmode="numeric"></div>
+      <div><label for="cfgSexo">Sexo</label><select id="cfgSexo"><option value="m">Masculino</option><option value="f">Feminino</option></select></div>
+      <div><label for="cfgAtiv">Atividade</label><select id="cfgAtiv">
+        <option value="1.2">Sedentário</option><option value="1.375">Leve</option>
+        <option value="1.55">Moderado</option><option value="1.725">Intenso</option></select></div>
+      <div><label for="cfgDef">Déficit alvo (kcal/dia)</label><input id="cfgDef" type="number" step="50" inputmode="numeric"></div>
+      <div><label for="cfgPart">Peso de partida (kg)</label><input id="cfgPart" type="number" step="0.1" inputmode="decimal"></div>
+      <div><label for="cfgM1">Meta 1 (kg)</label><input id="cfgM1" type="number" step="0.1" inputmode="decimal"></div>
+      <div><label for="cfgM2">Meta 2 (kg)</label><input id="cfgM2" type="number" step="0.1" inputmode="decimal"></div>
     </div>
-    <p class="note">Meta 1 = sair da faixa "Obeso" da sua balança (IMC&nbsp;30). Meta 2 = entrar na faixa saudável (IMC&nbsp;25). Ambas recalculam sozinhas se você mudar a altura.</p>
-    <div style="height:12px"></div>
-    <button class="btn ghost sm" id="salvaCfg">Salvar metas</button>
+    <p class="note" id="tmbNota">—</p>
+    <div style="height:10px"></div>
+    <button class="btn ghost sm" id="salvaCfg">Salvar perfil</button>
   </div>
 
-  <h2>Pesagens registradas</h2>
+  <h2>Lembretes</h2>
+  <div class="card">
+    <p class="note" style="margin:0 0 12px">Um site não consegue te notificar com o app fechado —
+    no iPhone é bloqueado, no Android é instável. Em vez de prometer o que não funciona, o painel gera
+    um arquivo de agenda: você importa uma vez e o <b>próprio celular</b> te lembra, com o app fechado.</p>
+    <label>Horários dos lembretes</label>
+    <div class="grid3" id="lembHoras"></div>
+    <div style="height:10px"></div>
+    <div class="rowbtn">
+      <button class="btn ghost sm" id="addLemb">+ Horário</button>
+      <button class="btn ghost sm" id="baixaIcs">⬇ Baixar .ics</button>
+    </div>
+    <details>
+      <summary>Como importar</summary>
+      <p><b>Android:</b> baixe o arquivo, abra o Google Agenda no computador →
+      Configurações → Importar e exportar → selecione o <code>.ics</code>. Os lembretes sincronizam com o celular.</p>
+      <p><b>iPhone:</b> baixe e toque no arquivo — o iOS abre o Calendário e pergunta se quer adicionar.</p>
+      <p><b>Mais simples ainda:</b> abra o app Relógio e crie 2 alarmes recorrentes nos seus horários.
+      Funciona igual e não precisa de arquivo nenhum.</p>
+    </details>
+  </div>
+
+  <h2>Pesagens</h2>
   <div class="card" id="tabMed"></div>
 
   <h2>Backup</h2>
   <div class="card">
-    <p class="note" style="margin:0 0 12px">Os dados ficam salvos só neste navegador. Exporte de vez em quando — se limpar o histórico do navegador, some tudo.</p>
+    <p class="note" style="margin:0 0 12px">Os dados ficam só neste navegador. Exporte de vez em quando —
+    limpar o histórico do navegador apaga tudo.</p>
     <button class="btn ghost sm" id="expBtn">⬇ Exportar backup (.json)</button>
     <div style="height:8px"></div>
     <button class="btn ghost sm" id="impBtn">⬆ Importar backup</button>
@@ -273,7 +266,7 @@ td.num{font-variant-numeric:tabular-nums}
 </div>
 
 <nav>
-  <button class="on" data-p="hoje"><span class="ic">✓</span>Hoje</button>
+  <button class="on" data-p="hoje"><span class="ic">🍽️</span>Hoje</button>
   <button data-p="painel"><span class="ic">📊</span>Painel</button>
   <button data-p="dados"><span class="ic">⚙</span>Dados</button>
 </nav>
@@ -282,47 +275,29 @@ td.num{font-variant-numeric:tabular-nums}
 
 <script>
 /* ==================================================================
-   PAINEL ALIMENTAR — registro por semáforo + composição corporal
+   PAINEL ALIMENTAR — registro de calorias + gasto adaptativo
    Dados 100% locais (localStorage). Sem dependências externas.
    ================================================================== */
 
-const KEY = 'painel-alimentar-v1';
+const KEY = 'painel-alimentar-v2';
+const KCAL_POR_KG = 7700;          // energia aproximada de 1 kg de tecido adiposo
+const SUGESTOES = ['Almoço','Janta','Lanche','Café','Bebida','Doce'];
 
-/* Refeições padrão. São só um ponto de partida — o usuário edita nomes,
-   liga/desliga e, principalmente, escreve o critério de cada cor.
-   Sem critério escrito, o semáforo não mede nada. */
-const REFS_PADRAO = [
-  {id:'cafe',   nome:'Café da manhã', hint:'primeira refeição', ativa:true,
-   crit:{v:'', a:'', r:''}},
-  {id:'almoco', nome:'Almoço',        hint:'refeição principal', ativa:true,
-   crit:{v:'', a:'', r:''}},
-  {id:'janta',  nome:'Janta',         hint:'última refeição', ativa:true,
-   crit:{v:'', a:'', r:''}},
-  {id:'extras', nome:'Extras',        hint:'lanches, bebidas, doces', ativa:true,
-   crit:{v:'', a:'', r:''}}
-];
-const VALORES = [
-  {v:'v', ic:'🟢', lab:'No plano'},
-  {v:'a', ic:'🟡', lab:'Escorreguei'},
-  {v:'r', ic:'🔴', lab:'Fora'}
-];
-/* 'p' = não fiz essa refeição. Neutro: não entra no numerador nem no
-   denominador da aderência. Pular o que você não come não é acerto nem erro. */
-const PESO_DE = {v:1, a:0.5, r:0};
-const refsAtivas = () => (S.cfg.refs||REFS_PADRAO).filter(r=>r.ativa);
-const todasRefs  = () => (S.cfg.refs||REFS_PADRAO);
+const PROMPT_FOTO =
+`Estime as calorias totais desta refeição pela foto.
+Responda APENAS com o número em kcal, sem explicação e sem texto adicional.
+Considere porções brasileiras e o método de preparo visível (frito, assado, cozido).
+Some todos os itens do prato, incluindo bebidas.
+Na dúvida entre duas estimativas, use a maior.`;
 
-/* ---------- estado ---------- */
 let S = carregar();
 let cursor = hojeISO();
 
 function padrao(){
   return {
-    /* partida = peso no dia em que o painel começou a ser usado. Definido na
-       1ª pesagem; sem ele a barra de progresso partiria do registro mais antigo. */
-    cfg: {altura:175, meta1:91.6, meta2:76.3, tmb:2000, partida:null,
-          refs: JSON.parse(JSON.stringify(REFS_PADRAO))},
-    dias: {},
+    cfg: {altura:175, idade:30, sexo:'m', atividade:1.2, deficit:500,
+          meta1:91.6, meta2:76.3, partida:null, lembretes:['12:30','19:30']},
+    dias: {},      // { "AAAA-MM-DD": {refs:[{n,k,h}], nota} }
     medidas: []
   };
 }
@@ -337,37 +312,89 @@ function carregar(){
 function salvar(){ localStorage.setItem(KEY, JSON.stringify(S)); }
 
 /* ---------- datas ---------- */
-function hojeISO(){
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-}
+function hojeISO(){ const d=new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
 function parseISO(s){ const [a,m,d]=s.split('-').map(Number); return new Date(a,m-1,d); }
-function toISO(d){ return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
-function addDias(iso,n){ const d=parseISO(iso); d.setDate(d.getDate()+n); return toISO(d); }
+function addDias(iso,n){ const d=parseISO(iso); d.setDate(d.getDate()+n);
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
 function diffDias(a,b){ return Math.round((parseISO(b)-parseISO(a))/864e5); }
-
-const DIAS_SEM = ['domingo','segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira','sábado'];
-const MESES = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
-
-function rotuloDia(iso){
-  const d = parseISO(iso), h = hojeISO();
+const DIAS_SEM=['domingo','segunda','terça','quarta','quinta','sexta','sábado'];
+const MESES=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+function rotuloDia(iso){ const h=hojeISO();
   if(iso===h) return 'Hoje';
   if(iso===addDias(h,-1)) return 'Ontem';
   if(iso===addDias(h,-2)) return 'Anteontem';
-  return DIAS_SEM[d.getDay()].replace('-feira','');
-}
-function rotuloData(iso){
-  const d = parseISO(iso);
-  return `${d.getDate()} de ${MESES[d.getMonth()]}. de ${d.getFullYear()}`;
-}
-function fmt(n,c=1){ return n==null||isNaN(n) ? '—' : n.toFixed(c).replace('.',','); }
+  return DIAS_SEM[parseISO(iso).getDay()]; }
+function rotuloData(iso){ const d=parseISO(iso);
+  return `${d.getDate()} de ${MESES[d.getMonth()]}. de ${d.getFullYear()}`; }
+function rotuloCurto(iso){ const d=parseISO(iso); return `${d.getDate()}/${MESES[d.getMonth()]}`; }
+function fmt(n,c=1){ return n==null||isNaN(n)?'—':n.toFixed(c).replace('.',','); }
+function esc(s){ return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 
-/* ---------- toast ---------- */
 let toastT;
-function toast(msg){
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('on');
-  clearTimeout(toastT); toastT = setTimeout(()=>t.classList.remove('on'), 1900);
+function toast(m){ const t=document.getElementById('toast'); t.textContent=m; t.classList.add('on');
+  clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('on'),1900); }
+
+/* ==================================================================
+   ENERGIA
+   ================================================================== */
+
+/* Mifflin-St Jeor — metabolismo basal */
+function tmb(peso){
+  const c = S.cfg;
+  if(!peso) return null;
+  return 10*peso + 6.25*c.altura - 5*c.idade + (c.sexo==='m' ? 5 : -161);
+}
+function tdeeEstimado(peso){ const b=tmb(peso); return b ? b*S.cfg.atividade : null; }
+
+/* Gasto real a partir dos próprios dados:
+      gasto = consumo médio + (peso perdido × 7700) / dias
+   Precisa de duas pesagens afastadas e de dias registrados no meio.
+   É melhor que qualquer fórmula porque embute o erro sistemático da
+   estimativa por foto — se a foto subestima, o gasto calculado cai junto. */
+function tdeeReal(){
+  const meds = S.medidas.slice().sort((a,b)=>a.data.localeCompare(b.data));
+  if(meds.length < 2) return null;
+  const fim = meds[meds.length-1];
+  // primeira pesagem com pelo menos 14 dias de distância da última
+  const ini = meds.find(m => diffDias(m.data, fim.data) >= 14);
+  if(!ini) return null;
+  const dias = diffDias(ini.data, fim.data);
+
+  let soma=0, n=0;
+  for(let c=ini.data; c<=fim.data; c=addDias(c,1)){
+    const k = kcalDoDia(c);
+    if(k>0){ soma+=k; n++; }
+  }
+  if(n < 10) return null;                       // amostra fraca demais
+  const cobertura = n/dias;
+  if(cobertura < 0.6) return null;              // muitos buracos: viesa a média
+
+  const consumoMedio = soma/n;
+  const deltaPeso = ini.peso - fim.peso;        // positivo = perdeu
+  const gasto = consumoMedio + deltaPeso*KCAL_POR_KG/dias;
+  return {gasto, dias, nDias:n, cobertura, consumoMedio, deltaPeso};
+}
+
+function gastoAtual(){
+  const r = tdeeReal();
+  if(r && r.gasto>1000 && r.gasto<6000) return {v:r.gasto, fonte:'real', det:r};
+  const ult = ultimaMedida();
+  const e = tdeeEstimado(ult ? ult.peso : null);
+  return e ? {v:e, fonte:'estimado'} : null;
+}
+function metaDiaria(){
+  const g = gastoAtual();
+  return g ? Math.max(1200, Math.round(g.v - S.cfg.deficit)) : null;
+}
+function ultimaMedida(){
+  if(!S.medidas.length) return null;
+  return S.medidas.slice().sort((a,b)=>a.data.localeCompare(b.data))[S.medidas.length-1];
+}
+function kcalDoDia(iso){
+  const d = S.dias[iso];
+  if(!d || !d.refs) return 0;
+  return d.refs.reduce((s,r)=>s+(+r.k||0),0);
 }
 
 /* ==================================================================
@@ -379,340 +406,309 @@ function renderHoje(){
   document.getElementById('nextD').disabled = cursor >= hojeISO();
 
   const dia = S.dias[cursor] || {};
-  const ativas = refsAtivas();
+  const refs = dia.refs || [];
+  const tot = kcalDoDia(cursor);
+  const meta = metaDiaria();
 
-  document.getElementById('meals').innerHTML = ativas.length ? ativas.map(r=>{
-    const temCrit = r.crit && (r.crit.v||r.crit.a||r.crit.r);
-    return `
-    <div class="meal">
-      <div class="meal-top">
-        <span class="meal-name">${r.nome}
-          ${temCrit?`<button class="qmark" data-crit="${r.id}" title="ver critério">?</button>`:''}
-        </span>
-        <span class="meal-hint">${r.hint||''}</span>
-      </div>
-      <div class="opts">
-        ${VALORES.map(o=>`
-          <button class="opt ${dia[r.id]===o.v?'on':''}" data-v="${o.v}" data-ref="${r.id}">
-            <span class="ic">${o.ic}</span>${o.lab}
-          </button>`).join('')}
-      </div>
-      <button class="skip ${dia[r.id]==='p'?'on':''}" data-v="p" data-ref="${r.id}">não fiz essa refeição</button>
-      ${temCrit?`<div class="crit" id="crit-${r.id}" hidden>
-        ${r.crit.v?`<div><b style="color:var(--verde)">🟢</b> ${esc(r.crit.v)}</div>`:''}
-        ${r.crit.a?`<div><b style="color:var(--amarelo)">🟡</b> ${esc(r.crit.a)}</div>`:''}
-        ${r.crit.r?`<div><b style="color:var(--vermelho)">🔴</b> ${esc(r.crit.r)}</div>`:''}
-      </div>`:''}
-    </div>`;
-  }).join('') : `<div class="card"><div class="empty">Nenhuma refeição ativa.<br>Configure em <b>Dados → Minhas refeições</b>.</div></div>`;
+  document.getElementById('totKcal').innerHTML = `${tot}<small> kcal</small>`;
+  document.getElementById('totMeta').textContent = meta ? `meta do dia: ${meta} kcal` : 'registre uma pesagem pra calcular a meta';
 
-  const cx = document.getElementById('meals');
-  cx.querySelectorAll('.opt, .skip').forEach(b=>{
+  const bar = document.getElementById('totBar');
+  const rest = document.getElementById('totRest');
+  if(meta){
+    const pct = Math.min(100, tot/meta*100);
+    const cor = tot<=meta ? 'var(--verde)' : tot<=meta*1.1 ? 'var(--amarelo)' : 'var(--vermelho)';
+    bar.style.width = pct+'%'; bar.style.background = cor;
+    const dif = meta - tot;
+    rest.innerHTML = tot===0 ? `<span style="color:var(--dim2)">nada registrado ainda</span>`
+      : dif>=0 ? `<span style="color:var(--verde)">restam ${dif} kcal</span>`
+               : `<span style="color:var(--vermelho)">${-dif} kcal acima da meta</span>`;
+  } else { bar.style.width='0%'; rest.textContent='—'; }
+
+  document.getElementById('listaRefs').innerHTML = refs.length
+    ? refs.map((r,i)=>`
+      <div class="ref">
+        <span class="ic">🍽️</span>
+        <div class="info">
+          <div class="nm">${esc(r.n||'Refeição')}</div>
+          <div class="hr">${r.h||''}</div>
+        </div>
+        <span class="kc">${r.k}</span>
+        <button class="rm" data-i="${i}" title="remover">✕</button>
+      </div>`).join('')
+    : `<div class="empty">Nenhuma refeição registrada.<br>Some as calorias abaixo conforme for comendo.</div>`;
+
+  document.getElementById('listaRefs').querySelectorAll('.rm').forEach(b=>{
     b.onclick = ()=>{
-      const ref = b.dataset.ref, v = b.dataset.v;
-      if(!S.dias[cursor]) S.dias[cursor] = {};
-      // clicar de novo no mesmo valor desmarca
-      S.dias[cursor][ref] = (S.dias[cursor][ref]===v) ? null : v;
+      S.dias[cursor].refs.splice(+b.dataset.i,1);
       salvar(); renderHoje(); renderStreak();
     };
   });
-  cx.querySelectorAll('.qmark').forEach(b=>{
-    b.onclick = ()=>{ const el = document.getElementById('crit-'+b.dataset.crit); el.hidden = !el.hidden; };
-  });
-
-  /* aviso enquanto não houver critério definido em nenhuma refeição */
-  const semCrit = ativas.length && !ativas.some(r=>r.crit && (r.crit.v||r.crit.a||r.crit.r));
-  document.getElementById('semCrit').hidden = !semCrit;
 
   document.getElementById('nota').value = dia.nota || '';
   document.getElementById('mData').value = cursor;
 }
 
-document.getElementById('nota').addEventListener('input', e=>{
-  if(!S.dias[cursor]) S.dias[cursor] = {};
-  S.dias[cursor].nota = e.target.value;
-  salvar();
-});
-document.getElementById('prevD').onclick = ()=>{ cursor = addDias(cursor,-1); renderHoje(); };
-document.getElementById('nextD').onclick = ()=>{ if(cursor<hojeISO()){ cursor = addDias(cursor,1); renderHoje(); } };
-
-/* ---------- streak: dias consecutivos com algum registro ---------- */
-function temRegistro(iso){
-  const d = S.dias[iso]; if(!d) return false;
-  return refsAtivas().some(r=>d[r.id]);   // 'p' conta como registro do dia
+/* chips de nome rápido */
+let chipSel = '';
+function renderChips(){
+  document.getElementById('chipsRef').innerHTML = SUGESTOES.map(s=>
+    `<button class="chip ${chipSel===s?'on':''}" data-s="${s}">${s}</button>`).join('');
+  document.querySelectorAll('#chipsRef .chip').forEach(b=>{
+    b.onclick = ()=>{
+      chipSel = chipSel===b.dataset.s ? '' : b.dataset.s;
+      document.getElementById('inNome').value = chipSel;
+      renderChips();
+    };
+  });
 }
+
+document.getElementById('addRef').onclick = ()=>{
+  const k = parseInt(document.getElementById('inKcal').value,10);
+  if(!k || k<=0){ toast('Informe as calorias'); return; }
+  const nome = document.getElementById('inNome').value.trim() || chipSel || 'Refeição';
+  let hora = document.getElementById('inHora').value;
+  if(!hora){ const d=new Date(); hora=`${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`; }
+  if(!S.dias[cursor]) S.dias[cursor] = {};
+  if(!S.dias[cursor].refs) S.dias[cursor].refs = [];
+  S.dias[cursor].refs.push({n:nome, k, h:hora});
+  S.dias[cursor].refs.sort((a,b)=>(a.h||'').localeCompare(b.h||''));
+  salvar();
+  document.getElementById('inKcal').value=''; document.getElementById('inNome').value='';
+  document.getElementById('inHora').value=''; chipSel=''; renderChips();
+  renderHoje(); renderStreak();
+  toast(`+${k} kcal ✓`);
+};
+
+document.getElementById('copiaPrompt').onclick = async ()=>{
+  try{
+    await navigator.clipboard.writeText(PROMPT_FOTO);
+    toast('Prompt copiado ✓');
+  }catch(e){
+    const t=document.createElement('textarea'); t.value=PROMPT_FOTO;
+    document.body.appendChild(t); t.select();
+    try{ document.execCommand('copy'); toast('Prompt copiado ✓'); }
+    catch(_){ alert(PROMPT_FOTO); }
+    document.body.removeChild(t);
+  }
+};
+
+document.getElementById('nota').addEventListener('input', e=>{
+  if(!S.dias[cursor]) S.dias[cursor]={};
+  S.dias[cursor].nota = e.target.value; salvar();
+});
+document.getElementById('prevD').onclick = ()=>{ cursor=addDias(cursor,-1); renderHoje(); renderStreak(); };
+document.getElementById('nextD').onclick = ()=>{ if(cursor<hojeISO()){ cursor=addDias(cursor,1); renderHoje(); renderStreak(); } };
+
+function temRegistro(iso){ return kcalDoDia(iso) > 0; }
 function calcStreak(){
-  let n = 0, c = hojeISO();
-  if(!temRegistro(c)) c = addDias(c,-1);   // ainda dá tempo de registrar hoje
-  while(temRegistro(c)){ n++; c = addDias(c,-1); }
+  let n=0, c=hojeISO();
+  if(!temRegistro(c)) c=addDias(c,-1);
+  while(temRegistro(c)){ n++; c=addDias(c,-1); }
   return n;
 }
 function renderStreak(){
   const n = calcStreak();
-  const dia = S.dias[cursor]||{};
-  const at = refsAtivas();
-  const feitas = at.filter(r=>dia[r.id]).length;
+  const nr = (S.dias[cursor]&&S.dias[cursor].refs||[]).length;
   document.getElementById('streakTop').textContent =
-    n>0 ? `🔥 ${n} ${n===1?'dia seguido':'dias seguidos'} · ${feitas}/${at.length} hoje`
-        : `${feitas}/${at.length} refeições registradas`;
+    n>0 ? `🔥 ${n} ${n===1?'dia seguido':'dias seguidos'} · ${nr} ${nr===1?'refeição':'refeições'} no dia`
+        : `${nr} ${nr===1?'refeição registrada':'refeições registradas'}`;
 }
 
 /* ---------- pesagem ---------- */
 document.getElementById('salvaMed').onclick = ()=>{
-  const g = id => { const v = parseFloat(document.getElementById(id).value); return isNaN(v)?null:v; };
+  const g = id=>{ const v=parseFloat(document.getElementById(id).value); return isNaN(v)?null:v; };
   const peso = g('mPeso');
   if(!peso){ toast('Informe o peso'); return; }
   const data = document.getElementById('mData').value || hojeISO();
-  const nova = {data, peso, gordura:g('mGord'), visceral:g('mVisc'), agua:g('mAgua'), musculo:g('mMusc')};
+  const nova = {data, peso, gordura:g('mGord'), visceral:g('mVisc')};
   const i = S.medidas.findIndex(m=>m.data===data);
-  if(i>=0) S.medidas[i] = nova; else S.medidas.push(nova);
+  if(i>=0) S.medidas[i]=nova; else S.medidas.push(nova);
   S.medidas.sort((a,b)=>a.data.localeCompare(b.data));
-  if(S.cfg.partida==null) S.cfg.partida = peso;   // origem da barra de progresso
+  if(S.cfg.partida==null) S.cfg.partida = peso;
   salvar();
-  ['mPeso','mGord','mVisc','mAgua','mMusc'].forEach(id=>document.getElementById(id).value='');
+  ['mPeso','mGord','mVisc'].forEach(id=>document.getElementById(id).value='');
   toast('Pesagem registrada ✓');
-  renderPainel(); renderTabela();
+  renderHoje(); renderPainel(); renderTabela();
 };
 
 /* ==================================================================
    ANÁLISE
    ================================================================== */
-
-/* média móvel de N dias sobre a série de pesagens (por data real) */
-function mediaMovel(meds, n=7){
+function mediaMovel(meds,n=7){
   return meds.map((m,i)=>{
-    const lim = addDias(m.data, -(n-1));
+    const lim = addDias(m.data,-(n-1));
     const jan = meds.slice(0,i+1).filter(x=>x.data>=lim);
     return {data:m.data, v: jan.reduce((s,x)=>s+x.peso,0)/jan.length};
   });
 }
-
-/* regressão linear simples -> kg por semana */
 function tendencia(serie){
   if(serie.length<3) return null;
   const x0 = parseISO(serie[0].data);
   const pts = serie.map(p=>({x:(parseISO(p.data)-x0)/864e5, y:p.v}));
-  const n = pts.length;
-  const sx = pts.reduce((s,p)=>s+p.x,0), sy = pts.reduce((s,p)=>s+p.y,0);
-  const sxy = pts.reduce((s,p)=>s+p.x*p.y,0), sxx = pts.reduce((s,p)=>s+p.x*p.x,0);
-  const den = n*sxx - sx*sx;
-  if(Math.abs(den) < 1e-9) return null;
-  const a = (n*sxy - sx*sy)/den;            // kg por dia
+  const n=pts.length;
+  const sx=pts.reduce((s,p)=>s+p.x,0), sy=pts.reduce((s,p)=>s+p.y,0);
+  const sxy=pts.reduce((s,p)=>s+p.x*p.y,0), sxx=pts.reduce((s,p)=>s+p.x*p.x,0);
+  const den=n*sxx-sx*sx;
+  if(Math.abs(den)<1e-9) return null;
+  const a=(n*sxy-sx*sy)/den;
   return {porDia:a, porSemana:a*7};
 }
-
-/* aderência de um intervalo [ini, fim] */
-function aderencia(ini, fim){
-  let pts=0, tot=0, dias=0;
+/* estatística de consumo num intervalo */
+function consumo(ini,fim){
+  let soma=0, n=0, acima=0;
+  const meta = metaDiaria();
   for(let c=ini; c<=fim; c=addDias(c,1)){
-    const d = S.dias[c]; if(!d) continue;
-    let achou=false;
-    refsAtivas().forEach(r=>{
-      const v = d[r.id]; if(!v) return;
-      achou = true;
-      if(v==='p') return;                       // pulou: neutro, fica fora da média
-      pts += PESO_DE[v]; tot++;
-    });
-    if(achou) dias++;
+    const k = kcalDoDia(c);
+    if(k>0){ soma+=k; n++; if(meta && k>meta) acima++; }
   }
-  return {pct: tot ? pts/tot*100 : null, registros:tot, dias};
+  const totalDias = diffDias(ini,fim)+1;
+  return {media: n?soma/n:null, dias:n, totalDias, acima, soma};
 }
-
-function ultimaMedida(){ return S.medidas.length ? S.medidas[S.medidas.length-1] : null; }
 
 /* ==================================================================
    PAINEL
    ================================================================== */
 function renderPainel(){
-  const meds = S.medidas.slice().sort((a,b)=>a.data.localeCompare(b.data));
   const box = document.getElementById('painelBody');
-  const ult = meds.length ? meds[meds.length-1] : null;
   const h = hojeISO();
-
-  const sem  = aderencia(addDias(h,-6), h);
-  const mes  = aderencia(addDias(h,-29), h);
+  const meds = S.medidas.slice().sort((a,b)=>a.data.localeCompare(b.data));
+  const ult = meds.length ? meds[meds.length-1] : null;
+  const meta = metaDiaria();
+  const g = gastoAtual();
+  const c7 = consumo(addDias(h,-6), h);
+  const c30 = consumo(addDias(h,-29), h);
   const strk = calcStreak();
 
   document.getElementById('pnlSub').textContent =
     ult ? `Última pesagem: ${rotuloData(ult.data)}` : 'Sem pesagens registradas';
 
   const mm = mediaMovel(meds,7);
-  /* tendência só dos últimos 90 dias — a série inteira mistura platôs antigos com o momento atual */
-  const jan90 = mm.filter(p => diffDias(p.data, h) <= 90);
-  const tend = tendencia(jan90.length>=3 ? jan90 : mm.slice(-6));
+  const j90 = mm.filter(p=>diffDias(p.data,h)<=90);
+  const tend = tendencia(j90.length>=3?j90:mm.slice(-6));
   const pesoAtual = mm.length ? mm[mm.length-1].v : null;
-  const alt = S.cfg.altura/100;
-  const imc = pesoAtual ? pesoAtual/(alt*alt) : null;
+  const imc = pesoAtual ? pesoAtual/Math.pow(S.cfg.altura/100,2) : null;
 
   let out = '';
 
   /* ---- KPIs ---- */
+  const defMedio = (g && c7.media!=null) ? g.v - c7.media : null;
   out += `<div class="kpis">
     <div class="kpi">
-      <div class="k-lab">Aderência 7 dias</div>
-      <div class="k-val" style="color:${sem.pct==null?'var(--dim2)':corAder(sem.pct)}">${sem.pct==null?'—':Math.round(sem.pct)+'<small>%</small>'}</div>
-      <div class="k-sub">${sem.dias}/7 dias registrados</div>
+      <div class="k-lab">Média 7 dias</div>
+      <div class="k-val">${c7.media!=null?Math.round(c7.media):'—'}<small> kcal</small></div>
+      <div class="k-sub">${c7.dias}/7 dias registrados</div>
+    </div>
+    <div class="kpi">
+      <div class="k-lab">Déficit médio</div>
+      <div class="k-val" style="color:${defMedio==null?'var(--dim2)':defMedio>0?'var(--verde)':'var(--vermelho)'}">${defMedio!=null?(defMedio>0?'−':'+')+Math.abs(Math.round(defMedio)):'—'}<small> kcal</small></div>
+      <div class="k-sub">${defMedio!=null?(defMedio>0?'abaixo do gasto':'acima do gasto'):'precisa de dados'}</div>
     </div>
     <div class="kpi">
       <div class="k-lab">Sequência</div>
       <div class="k-val">${strk}<small> ${strk===1?'dia':'dias'}</small></div>
-      <div class="k-sub">${strk>0?'não quebre 🔥':'registre hoje pra começar'}</div>
+      <div class="k-sub">${strk>0?'não quebre 🔥':'registre hoje'}</div>
     </div>
     <div class="kpi">
       <div class="k-lab">Peso (média 7d)</div>
       <div class="k-val">${pesoAtual?fmt(pesoAtual,1):'—'}<small> kg</small></div>
-      <div class="k-sub">${ult?'último: '+fmt(ult.peso,2)+' kg':'—'}</div>
-    </div>
-    <div class="kpi">
-      <div class="k-lab">Tendência</div>
-      <div class="k-val" style="color:${tend?(tend.porSemana<0?'var(--verde)':'var(--vermelho)'):'var(--dim2)'}">${tend?(tend.porSemana>0?'+':'')+fmt(tend.porSemana,2):'—'}<small> kg/sem</small></div>
-      <div class="k-sub">${tend?(jan90.length>=3?'últimos 90 dias':'últimas pesagens'):'precisa de 3 pesagens'}</div>
+      <div class="k-sub">${tend?(tend.porSemana>0?'+':'')+fmt(tend.porSemana,2)+' kg/sem':'—'}</div>
     </div>
   </div>`;
 
-  /* ---- metas ---- */
-  if(pesoAtual){
-    const p0 = S.cfg.partida || meds[0].peso;
-    out += `<h2>Progresso</h2><div class="card">`;
-    out += barraMeta('Sair da faixa "Obeso"', p0, pesoAtual, S.cfg.meta1, 'var(--amarelo)', tend);
-    out += `<div style="height:14px"></div>`;
-    out += barraMeta('Faixa saudável', p0, pesoAtual, S.cfg.meta2, 'var(--verde)', tend);
-    out += `<div class="hr"></div>
-      <div style="display:flex;justify-content:space-between;font-size:13px">
-        <span style="color:var(--dim)">IMC atual</span>
-        <b>${fmt(imc,1)} · ${faixaIMC(imc)}</b>
+  /* ---- gasto energético ---- */
+  out += `<h2>Seu gasto</h2><div class="card">`;
+  if(g){
+    const r = g.det;
+    out += `<div style="display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:9px">
+        <span style="color:var(--dim)">Gasto diário${g.fonte==='real'?' (calculado)':' (estimado)'}</span>
+        <b>${Math.round(g.v)} kcal</b>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:9px">
+        <span style="color:var(--dim)">Déficit alvo</span><b>−${S.cfg.deficit} kcal</b>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:14px">
+        <span style="color:var(--dim)">Meta diária</span>
+        <b style="color:var(--azul);font-size:16px">${meta} kcal</b>
       </div>`;
-    out += `</div>`;
-
-    /* ---- contexto histórico ---- */
-    const min = meds.reduce((a,b)=>b.peso<a.peso?b:a);
-    const desdeMin = diffDias(min.data, ult.data);
-    out += `<h2>Contexto</h2><div class="card">
-      <div style="display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:9px">
-        <span style="color:var(--dim)">Menor peso registrado</span>
-        <b>${fmt(min.peso,2)} kg <span style="color:var(--dim2);font-weight:400">· ${rotuloCurto(min.data)}/${String(parseISO(min.data).getFullYear()).slice(2)}</span></b>
-      </div>
-      <div style="display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:9px">
-        <span style="color:var(--dim)">Desde então</span>
-        <b style="color:${ult.peso>min.peso?'var(--vermelho)':'var(--verde)'}">${(ult.peso-min.peso>0?'+':'')}${fmt(ult.peso-min.peso,2)} kg em ${desdeMin} dias</b>
-      </div>
-      <div style="display:flex;justify-content:space-between;font-size:13.5px">
-        <span style="color:var(--dim)">Dias desde a última pesagem</span>
-        <b style="color:${diffDias(ult.data,h)>21?'var(--amarelo)':'var(--txt)'}">${diffDias(ult.data,h)}</b>
-      </div>
-      <p class="note">${textoContexto(meds, min, ult, desdeMin)}</p>
-    </div>`;
+    if(g.fonte==='real'){
+      out += `<p class="note"><b>Este número veio dos seus dados, não de fórmula.</b>
+        Em ${r.dias} dias você consumiu ${Math.round(r.consumoMedio)} kcal/dia em média e o peso
+        ${r.deltaPeso>0?'caiu':'subiu'} ${fmt(Math.abs(r.deltaPeso),2)} kg — só existe um gasto que
+        explica as duas coisas ao mesmo tempo, e é esse. Cobertura de ${Math.round(r.cobertura*100)}%
+        dos dias no período. Quanto mais dias registrados, mais firme fica.</p>`;
+    } else {
+      out += `<p class="note">Estimativa por fórmula (Mifflin-St Jeor × nível de atividade) — vale como
+        ponto de partida, mas erra fácil 15% pra qualquer lado. Depois de <b>14 dias registrados e duas
+        pesagens</b>, o painel troca isso pelo seu gasto real, calculado do seu consumo e da variação de
+        peso. É aí que a meta passa a ser sua de verdade.</p>`;
+    }
+  } else {
+    out += `<div class="empty">Registre uma pesagem<br>pra calcular sua meta diária.</div>`;
   }
-
-  /* ---- gráfico de peso ---- */
-  out += `<h2>Peso e tendência</h2><div class="card">`;
-  out += meds.length>=2 ? graficoPeso(meds, mm)
-       : `<div class="empty">Registre pelo menos 2 pesagens<br>para ver a curva de peso.</div>`;
   out += `</div>`;
 
-  /* ---- índices derivados (com a ressalva honesta) ---- */
-  const comp = meds.filter(m=>m.gordura!=null);
-  out += `<h2>Índices da balança</h2><div class="card">`;
-  if(comp.length>=1){
-    const u = comp[comp.length-1];
-    const gKg = u.peso*u.gordura/100;
-    out += `<div class="kpis" style="margin-bottom:12px">
-      <div class="kpi" style="background:var(--card2)">
-        <div class="k-lab">Gordura estimada</div>
-        <div class="k-val" style="color:var(--vermelho);font-size:22px">${fmt(u.gordura,1)}<small>%</small></div>
-        <div class="k-sub">${fmt(gKg,1)} kg</div>
-      </div>
-      <div class="kpi" style="background:var(--card2)">
-        <div class="k-lab">Gordura visceral</div>
-        <div class="k-val" style="color:${u.visceral>=15?'var(--vermelho)':u.visceral>=10?'var(--amarelo)':'var(--verde)'};font-size:22px">${fmt(u.visceral,0)}</div>
-        <div class="k-sub">${u.visceral>=15?'alto':u.visceral>=10?'elevado':'desejável'}</div>
-      </div>
-    </div>
-    ${avisoBioimpedancia(comp)}`;
-  } else {
-    out += `<div class="empty">Sem dados de composição.</div>`;
+  /* ---- progresso ---- */
+  if(pesoAtual && S.cfg.partida){
+    out += `<h2>Progresso</h2><div class="card">`;
+    out += barraMeta('Meta 1', S.cfg.partida, pesoAtual, S.cfg.meta1, 'var(--amarelo)', tend);
+    out += `<div style="height:14px"></div>`;
+    out += barraMeta('Meta 2', S.cfg.partida, pesoAtual, S.cfg.meta2, 'var(--verde)', tend);
+    out += `<div class="hr"></div>
+      <div style="display:flex;justify-content:space-between;font-size:13px">
+        <span style="color:var(--dim)">IMC atual</span><b>${fmt(imc,1)} · ${faixaIMC(imc)}</b>
+      </div></div>`;
   }
+
+  /* ---- consumo no tempo ---- */
+  out += `<h2>Consumo diário</h2><div class="card">`;
+  const serie = [];
+  for(let c=addDias(h,-29); c<=h; c=addDias(c,1)){
+    const k = kcalDoDia(c); if(k>0) serie.push({data:c, k});
+  }
+  out += serie.length>=2 ? graficoKcal(serie, meta)
+       : `<div class="empty">Registre pelo menos 2 dias<br>pra ver o gráfico de consumo.</div>`;
+  out += `</div>`;
+
+  /* ---- peso ---- */
+  out += `<h2>Peso</h2><div class="card">`;
+  out += meds.length>=2 ? graficoPeso(meds, mm)
+       : `<div class="empty">Registre pelo menos 2 pesagens<br>pra ver a curva de peso.</div>`;
   out += `</div>`;
 
   /* ---- heatmap ---- */
-  out += `<h2>Últimas 12 semanas</h2><div class="card">${heatmap()}</div>`;
+  out += `<h2>Últimas 12 semanas</h2><div class="card">${heatmap(meta)}</div>`;
 
-  /* ---- resumo 30 dias ---- */
-  if(mes.pct!=null){
+  /* ---- 30 dias ---- */
+  if(c30.dias>0){
     out += `<h2>Últimos 30 dias</h2><div class="card">
       <div style="display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:9px">
-        <span style="color:var(--dim)">Aderência média</span><b style="color:${corAder(mes.pct)}">${Math.round(mes.pct)}%</b>
+        <span style="color:var(--dim)">Consumo médio</span><b>${Math.round(c30.media)} kcal</b>
       </div>
       <div style="display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:9px">
-        <span style="color:var(--dim)">Dias registrados</span><b>${mes.dias} de 30</b>
+        <span style="color:var(--dim)">Dias registrados</span><b>${c30.dias} de 30</b>
       </div>
       <div style="display:flex;justify-content:space-between;font-size:13.5px">
-        <span style="color:var(--dim)">Refeições marcadas</span><b>${mes.registros}</b>
+        <span style="color:var(--dim)">Dias acima da meta</span><b>${c30.acima}</b>
       </div>
-      <p class="note">${mensagem(mes)}</p>
+      <p class="note">${mensagem(c30, g, tend)}</p>
     </div>`;
   }
 
   box.innerHTML = out;
 }
 
-/* Correlação de Pearson entre duas séries */
-function pearson(xs, ys){
-  const n = xs.length; if(n<3) return null;
-  const mx = xs.reduce((a,b)=>a+b,0)/n, my = ys.reduce((a,b)=>a+b,0)/n;
-  let num=0, dx=0, dy=0;
-  for(let i=0;i<n;i++){ const a=xs[i]-mx, b=ys[i]-my; num+=a*b; dx+=a*a; dy+=b*b; }
-  const den = Math.sqrt(dx*dy);
-  return den<1e-12 ? null : num/den;
-}
-
-/* Muitas balanças de bioimpedância doméstica não medem composição de forma
-   independente: derivam tudo de peso/altura/idade/sexo. Isso é detectável —
-   pesos iguais devolvem valores iguais e a correlação com o peso fica ~1. */
-function avisoBioimpedancia(comp){
-  const r = pearson(comp.map(m=>m.peso), comp.map(m=>m.gordura));
-  if(r==null) return '';
-  const rs = Math.abs(r).toFixed(3).replace('.',',');
-
-  // pesos repetidos em datas diferentes devolveram a MESMA gordura?
-  const porPeso = {}; let rep=0, div=0;
-  comp.forEach(m=>{
-    const k = m.peso.toFixed(2);
-    if(k in porPeso){ rep++; if(porPeso[k]!==m.gordura) div++; }
-    else porPeso[k] = m.gordura;
-  });
-
-  if(Math.abs(r) > 0.97){
-    const prova = rep>0 && div===0
-      ? ` E a prova direta: ${rep} ${rep===1?'peso repetido':'pesos repetidos'} em datas diferentes ${rep===1?'devolveu':'devolveram'} exatamente a mesma gordura — medição real varia com hidratação e horário, fórmula não varia.`
-      : '';
-    return `<p class="note"><b>Leia com ressalva.</b> Nos seus dados, a % de gordura tem correlação de <b>${rs}</b> com o peso — ou seja, não é um segundo indicador, é o peso reescalado.${prova} Balança doméstica costuma calcular composição por fórmula sobre peso, altura, idade e sexo. <b>Para medida de verdade, use fita métrica na cintura</b>: custa 10 segundos e responde ao que a balança não vê.</p>`;
-  }
-  return `<p class="note">Correlação da % de gordura com o peso: <b>${rs}</b>. Abaixo de 0,97 a balança provavelmente está medindo algo além do peso — vale acompanhar como indicador próprio.</p>`;
-}
-
-function textoContexto(meds, min, ult, dias){
-  const d = ult.peso - min.peso;
-  if(d <= 0.5) return 'Você está no seu melhor patamar registrado. O trabalho aqui é manter, não apertar.';
-  const kcal = Math.round(d*7700/Math.max(dias,1));
-  return `São ${fmt(d,1)} kg acima do seu melhor momento, acumulados ao longo de ${dias} dias — o equivalente a um excedente médio de cerca de <b>${kcal} kcal por dia</b>. Vale ler isso com atenção: não foi descontrole, foi um desvio pequeno e constante, do tamanho de um lanche extra por dia. É importante porque a correção também é pequena. Você não precisa de dieta radical — precisa reverter algumas centenas de calorias diárias e sustentar isso. E você já esteve nesse peso: ${fmt(min.peso,1)} kg não é uma meta hipotética, é um lugar onde você já esteve.`;
-}
-
-function corAder(p){ return p>=80?'var(--verde)':p>=60?'var(--amarelo)':'var(--vermelho)'; }
-function faixaIMC(i){
-  if(i==null) return '—';
-  return i<18.5?'abaixo do peso':i<25?'saudável':i<30?'sobrepeso':i<35?'obesidade grau I':i<40?'obesidade grau II':'obesidade grau III';
-}
+function faixaIMC(i){ return i==null?'—':i<18.5?'abaixo do peso':i<25?'saudável':i<30?'sobrepeso'
+  :i<35?'obesidade grau I':i<40?'obesidade grau II':'obesidade grau III'; }
 
 function barraMeta(titulo, inicio, atual, meta, cor, tend){
-  const total = inicio - meta;
-  const feito = inicio - atual;
-  const pct = total>0 ? Math.max(0, Math.min(100, feito/total*100)) : (atual<=meta?100:0);
-  const falta = atual - meta;
-  let prev = '';
-  if(tend && tend.porSemana < -0.05 && falta > 0){
-    const sem = falta / (-tend.porSemana);
-    const d = new Date(); d.setDate(d.getDate() + Math.round(sem*7));
+  const total = inicio-meta, feito = inicio-atual;
+  const pct = total>0 ? Math.max(0,Math.min(100,feito/total*100)) : (atual<=meta?100:0);
+  const falta = atual-meta;
+  let prev='';
+  if(tend && tend.porSemana<-0.05 && falta>0){
+    const sem = falta/(-tend.porSemana);
+    const d = new Date(); d.setDate(d.getDate()+Math.round(sem*7));
     prev = ` · previsão ${MESES[d.getMonth()]}/${String(d.getFullYear()).slice(2)}`;
   }
   return `<div class="goal">
@@ -720,97 +716,118 @@ function barraMeta(titulo, inicio, atual, meta, cor, tend){
       <span style="color:var(--dim)">${titulo} <b style="color:var(--txt)">${fmt(meta,1)} kg</b></span>
       <b style="color:${falta<=0?'var(--verde)':'var(--txt)'}">${falta<=0?'atingida ✓':'faltam '+fmt(falta,1)+' kg'}</b>
     </div>
-    <div class="bar"><i style="width:${pct}%;background:${cor}"></i></div>
+    <div class="bar" style="margin:0"><i style="width:${pct}%;background:${cor}"></i></div>
     <div style="font-size:11px;color:var(--dim2);margin-top:5px">${Math.round(pct)}% do caminho${prev}</div>
   </div>`;
 }
 
-function mensagem(a){
-  if(a.dias<7) return 'Ainda são poucos dias pra tirar conclusão. O valor aqui vem da consistência, não da perfeição — registre mesmo nos dias ruins, principalmente nos dias ruins.';
-  if(a.pct>=80) return 'Aderência alta e consistente. Se o peso não estiver caindo neste ritmo, o problema não é disciplina — é a calibragem do plano. Vale ajustar as porções antes de apertar mais.';
-  if(a.pct>=60) return 'Aderência razoável. Olhe o mapa acima: se os vermelhos se concentram em dias específicos da semana, o ajuste é nesses dias — não no plano inteiro.';
-  return 'Aderência baixa. Normalmente isso quer dizer que o plano está restritivo demais pra rotina real, não que faltou força de vontade. Um plano de 70% seguido bate um de 100% abandonado.';
+function mensagem(c, g, tend){
+  if(c.dias<10) return 'Poucos dias ainda. O painel precisa de umas duas semanas de registro e duas pesagens pra calcular seu gasto real — a partir daí a meta deixa de ser fórmula e passa a ser sua.';
+  const cob = c.dias/c.totalDias;
+  if(cob<0.5) return `Só ${c.dias} dos 30 dias têm registro. Com metade dos dias em branco, a média engana: normalmente os dias não registrados são justamente os de maior consumo. Registrar o dia ruim vale mais que registrar o dia bom.`;
+  if(tend && tend.porSemana>0.05) return 'Consumo registrado abaixo da meta, mas o peso subindo. Quase sempre isso é subestimativa nas fotos ou dias não registrados — não gasto baixo. Vale conferir se as porções estimadas batem com o que foi pro prato.';
+  if(tend && tend.porSemana<-0.15) return `Funcionando. Nesse ritmo você perde cerca de ${fmt(Math.abs(tend.porSemana)*4.3,1)} kg por mês. Se ficar muito mais rápido que isso, costuma vir junto perda de massa magra — nesse caso vale afrouxar o déficit.`;
+  return 'Consistente. Se o peso não estiver reagindo depois de 3 semanas assim, o problema é calibragem do gasto, não disciplina — aumente o déficit alvo em 100–150 kcal e observe mais duas semanas.';
 }
 
-/* ---------- gráfico de peso (SVG) ---------- */
-function graficoPeso(meds, mm){
-  const W=560, H=210, ml=44, mr=10, mt=14, mb=26;
-  const d0 = parseISO(meds[0].data), d1 = parseISO(meds[meds.length-1].data);
-  const span = Math.max(1, (d1-d0)/864e5);
-  const vals = meds.map(m=>m.peso).concat(mm.map(m=>m.v));
-  let lo = Math.min(...vals), hi = Math.max(...vals);
-  const pad = Math.max(0.8, (hi-lo)*0.18); lo-=pad; hi+=pad;
-  const X = iso => ml + ((parseISO(iso)-d0)/864e5)/span*(W-ml-mr);
-  const Y = v   => mt + (1-(v-lo)/(hi-lo))*(H-mt-mb);
+/* ---------- gráfico de consumo ---------- */
+function graficoKcal(serie, meta){
+  const W=560,H=200,ml=44,mr=10,mt=14,mb=26;
+  const d0=parseISO(serie[0].data), d1=parseISO(serie[serie.length-1].data);
+  const span=Math.max(1,(d1-d0)/864e5);
+  const vals=serie.map(p=>p.k).concat(meta?[meta]:[]);
+  let lo=Math.min(...vals), hi=Math.max(...vals);
+  const pad=Math.max(120,(hi-lo)*0.18); lo=Math.max(0,lo-pad); hi+=pad;
+  const X=iso=>ml+((parseISO(iso)-d0)/864e5)/span*(W-ml-mr);
+  const Y=v=>mt+(1-(v-lo)/(hi-lo))*(H-mt-mb);
 
-  let g = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Curva de peso">`;
+  let g=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Consumo diário de calorias">`;
   for(let i=0;i<=3;i++){
-    const v = lo+(hi-lo)*i/3, y = Y(v);
-    g += `<line x1="${ml}" y1="${y.toFixed(1)}" x2="${W-mr}" y2="${y.toFixed(1)}" stroke="#282d38" stroke-width="1"/>
-          <text x="${ml-7}" y="${(y+4).toFixed(1)}" fill="#6b7280" font-size="10" text-anchor="end">${v.toFixed(1)}</text>`;
+    const v=lo+(hi-lo)*i/3, y=Y(v);
+    g+=`<line x1="${ml}" y1="${y.toFixed(1)}" x2="${W-mr}" y2="${y.toFixed(1)}" stroke="#282d38"/>
+        <text x="${ml-7}" y="${(y+4).toFixed(1)}" fill="#6b7280" font-size="10" text-anchor="end">${Math.round(v)}</text>`;
   }
-  // metas dentro da janela
-  [[S.cfg.meta1,'#f0b429','meta 1'],[S.cfg.meta2,'#22c55e','meta 2']].forEach(([m,c,l])=>{
-    if(m>lo && m<hi){
-      g += `<line x1="${ml}" y1="${Y(m).toFixed(1)}" x2="${W-mr}" y2="${Y(m).toFixed(1)}" stroke="${c}" stroke-width="1" stroke-dasharray="4 4" opacity=".6"/>
-            <text x="${W-mr}" y="${(Y(m)-5).toFixed(1)}" fill="${c}" font-size="9.5" text-anchor="end" opacity=".85">${l}</text>`;
-    }
+  if(meta && meta>lo && meta<hi){
+    g+=`<line x1="${ml}" y1="${Y(meta).toFixed(1)}" x2="${W-mr}" y2="${Y(meta).toFixed(1)}" stroke="#4b9fff" stroke-width="1.5" stroke-dasharray="5 4" opacity=".8"/>
+        <text x="${W-mr}" y="${(Y(meta)-5).toFixed(1)}" fill="#4b9fff" font-size="9.5" text-anchor="end">meta</text>`;
+  }
+  const bw = Math.max(3, Math.min(16, (W-ml-mr)/Math.max(serie.length,1)*0.62));
+  serie.forEach(p=>{
+    const x=X(p.data), y=Y(p.k), base=Y(lo);
+    const cor = !meta ? '#4b9fff' : p.k<=meta ? '#22c55e' : p.k<=meta*1.1 ? '#f0b429' : '#ef4444';
+    g+=`<rect x="${(x-bw/2).toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(1,base-y).toFixed(1)}" fill="${cor}" rx="2" opacity=".85"><title>${rotuloCurto(p.data)}: ${p.k} kcal</title></rect>`;
   });
-  // pontos brutos
-  meds.forEach(m=>{ g += `<circle cx="${X(m.data).toFixed(1)}" cy="${Y(m.peso).toFixed(1)}" r="2.6" fill="#4b9fff" opacity=".38"/>`; });
-  // média móvel
-  if(mm.length>=2){
-    g += `<polyline points="${mm.map(p=>X(p.data).toFixed(1)+','+Y(p.v).toFixed(1)).join(' ')}" fill="none" stroke="#4b9fff" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>`;
-    const u = mm[mm.length-1];
-    g += `<circle cx="${X(u.data).toFixed(1)}" cy="${Y(u.v).toFixed(1)}" r="4.5" fill="#4b9fff" stroke="#0f1115" stroke-width="2"/>`;
-  }
-  g += `<text x="${ml}" y="${H-6}" fill="#6b7280" font-size="10">${rotuloCurto(meds[0].data)}</text>
-        <text x="${W-mr}" y="${H-6}" fill="#6b7280" font-size="10" text-anchor="end">${rotuloCurto(meds[meds.length-1].data)}</text></svg>`;
-  g += `<div class="legend">
-          <span><i class="dot" style="background:#4b9fff;opacity:.38"></i>pesagem</span>
-          <span><i class="dot" style="background:#4b9fff"></i>média móvel 7 dias</span>
-        </div>
-        <p class="note">A balança oscila até 1 kg só por água e sal. Siga a linha cheia, não os pontos — é ela que diz se está funcionando.</p>`;
+  g+=`<text x="${ml}" y="${H-6}" fill="#6b7280" font-size="10">${rotuloCurto(serie[0].data)}</text>
+      <text x="${W-mr}" y="${H-6}" fill="#6b7280" font-size="10" text-anchor="end">${rotuloCurto(serie[serie.length-1].data)}</text></svg>
+      <div class="legend">
+        <span><i class="dot" style="background:#22c55e"></i>dentro da meta</span>
+        <span><i class="dot" style="background:#f0b429"></i>até 10% acima</span>
+        <span><i class="dot" style="background:#ef4444"></i>mais que isso</span>
+      </div>`;
   return g;
 }
 
-function rotuloCurto(iso){ const d=parseISO(iso); return `${d.getDate()}/${MESES[d.getMonth()]}`; }
+/* ---------- gráfico de peso ---------- */
+function graficoPeso(meds, mm){
+  const W=560,H=200,ml=44,mr=10,mt=14,mb=26;
+  const d0=parseISO(meds[0].data), d1=parseISO(meds[meds.length-1].data);
+  const span=Math.max(1,(d1-d0)/864e5);
+  const vals=meds.map(m=>m.peso).concat(mm.map(m=>m.v));
+  let lo=Math.min(...vals), hi=Math.max(...vals);
+  const pad=Math.max(0.8,(hi-lo)*0.18); lo-=pad; hi+=pad;
+  const X=iso=>ml+((parseISO(iso)-d0)/864e5)/span*(W-ml-mr);
+  const Y=v=>mt+(1-(v-lo)/(hi-lo))*(H-mt-mb);
 
-/* ---------- heatmap 12 semanas ---------- */
-function heatmap(){
-  const h = hojeISO();
-  const fimSem = addDias(h, 6-parseISO(h).getDay());   // sábado da semana atual
-  const ini = addDias(fimSem, -(12*7-1));
-  let html = `<div class="heat">${['D','S','T','Q','Q','S','S'].map(d=>`<div class="hd">${d}</div>`).join('')}`;
-  for(let c=ini; c<=fimSem; c=addDias(c,1)){
-    const d = S.dias[c];
-    const at = refsAtivas();
-    const marc = d ? at.map(r=>d[r.id]).filter(Boolean) : [];
-    const aval = marc.filter(v=>v!=='p');       // 'p' não entra na nota do dia
-    let bg='', cls='c', tit = rotuloData(c);
-    if(marc.length){
-      if(aval.length){
-        const sc = aval.reduce((s,v)=>s+PESO_DE[v],0)/aval.length;
-        const cor = sc>=0.85?'34,197,94' : sc>=0.5?'240,180,41' : '239,68,68';
-        const op = 0.32 + 0.68*(marc.length/Math.max(at.length,1));
-        bg = `background:rgba(${cor},${op.toFixed(2)})`;
-        tit += ` — ${aval.length}/${at.length} · ${Math.round(sc*100)}%`;
-      } else {
-        bg = `background:rgba(107,114,128,.35)`;   // dia inteiro pulado
-        tit += ' — todas as refeições puladas';
-      }
-    } else if(c<=h){
-      cls += ' f'; tit += ' — sem registro';
-    }
-    html += `<div class="${cls}" style="${bg}" title="${tit}"></div>`;
+  let g=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Curva de peso">`;
+  for(let i=0;i<=3;i++){
+    const v=lo+(hi-lo)*i/3, y=Y(v);
+    g+=`<line x1="${ml}" y1="${y.toFixed(1)}" x2="${W-mr}" y2="${y.toFixed(1)}" stroke="#282d38"/>
+        <text x="${ml-7}" y="${(y+4).toFixed(1)}" fill="#6b7280" font-size="10" text-anchor="end">${v.toFixed(1)}</text>`;
   }
-  html += `</div><div class="legend">
-      <span><i class="dot" style="background:rgba(34,197,94,.9)"></i>bom</span>
-      <span><i class="dot" style="background:rgba(240,180,41,.9)"></i>médio</span>
-      <span><i class="dot" style="background:rgba(239,68,68,.9)"></i>ruim</span>
+  [[S.cfg.meta1,'#f0b429','meta 1'],[S.cfg.meta2,'#22c55e','meta 2']].forEach(([m,c,l])=>{
+    if(m>lo&&m<hi) g+=`<line x1="${ml}" y1="${Y(m).toFixed(1)}" x2="${W-mr}" y2="${Y(m).toFixed(1)}" stroke="${c}" stroke-dasharray="4 4" opacity=".6"/>
+      <text x="${W-mr}" y="${(Y(m)-5).toFixed(1)}" fill="${c}" font-size="9.5" text-anchor="end" opacity=".85">${l}</text>`;
+  });
+  meds.forEach(m=>{ g+=`<circle cx="${X(m.data).toFixed(1)}" cy="${Y(m.peso).toFixed(1)}" r="2.6" fill="#4b9fff" opacity=".38"/>`; });
+  if(mm.length>=2){
+    g+=`<polyline points="${mm.map(p=>X(p.data).toFixed(1)+','+Y(p.v).toFixed(1)).join(' ')}" fill="none" stroke="#4b9fff" stroke-width="2.4" stroke-linejoin="round"/>`;
+    const u=mm[mm.length-1];
+    g+=`<circle cx="${X(u.data).toFixed(1)}" cy="${Y(u.v).toFixed(1)}" r="4.5" fill="#4b9fff" stroke="#0f1115" stroke-width="2"/>`;
+  }
+  g+=`<text x="${ml}" y="${H-6}" fill="#6b7280" font-size="10">${rotuloCurto(meds[0].data)}</text>
+      <text x="${W-mr}" y="${H-6}" fill="#6b7280" font-size="10" text-anchor="end">${rotuloCurto(meds[meds.length-1].data)}</text></svg>
+      <div class="legend">
+        <span><i class="dot" style="background:#4b9fff;opacity:.38"></i>pesagem</span>
+        <span><i class="dot" style="background:#4b9fff"></i>média móvel 7 dias</span>
+      </div>
+      <p class="note">A balança oscila até 1 kg só por água e sal. Siga a linha cheia, não os pontos.</p>`;
+  return g;
+}
+
+/* ---------- heatmap ---------- */
+function heatmap(meta){
+  const h=hojeISO();
+  const fimSem=addDias(h,6-parseISO(h).getDay());
+  const ini=addDias(fimSem,-(12*7-1));
+  let html=`<div class="heat">${['D','S','T','Q','Q','S','S'].map(d=>`<div class="hd">${d}</div>`).join('')}`;
+  for(let c=ini;c<=fimSem;c=addDias(c,1)){
+    const k=kcalDoDia(c);
+    let bg='',cls='c',tit=rotuloData(c);
+    if(k>0){
+      const cor = !meta ? '75,159,255' : k<=meta ? '34,197,94' : k<=meta*1.1 ? '240,180,41' : '239,68,68';
+      const op = meta ? Math.min(1, 0.45 + 0.55*Math.min(k/meta,1.4)/1.4) : 0.8;
+      bg=`background:rgba(${cor},${op.toFixed(2)})`;
+      tit+=` — ${k} kcal`;
+    } else if(c<=h){ cls+=' f'; tit+=' — sem registro'; }
+    html+=`<div class="${cls}" style="${bg}" title="${tit}"></div>`;
+  }
+  html+=`</div><div class="legend">
+      <span><i class="dot" style="background:rgba(34,197,94,.9)"></i>dentro da meta</span>
+      <span><i class="dot" style="background:rgba(240,180,41,.9)"></i>pouco acima</span>
+      <span><i class="dot" style="background:rgba(239,68,68,.9)"></i>bem acima</span>
       <span><i class="dot" style="background:#1e222b;border:1px solid #282d38"></i>sem registro</span>
     </div>
-    <p class="note">Intensidade da cor = quantas refeições você registrou. Padrões aparecem aqui: se a coluna de sábado vive vermelha, o ajuste é no sábado.</p>`;
+    <p class="note">Padrões aparecem aqui. Se a coluna de sábado vive vermelha, o ajuste é no sábado — não na semana inteira.</p>`;
   return html;
 }
 
@@ -818,10 +835,10 @@ function heatmap(){
    DADOS
    ================================================================== */
 function renderTabela(){
-  const box = document.getElementById('tabMed');
-  if(!S.medidas.length){ box.innerHTML = `<div class="empty">Nenhuma pesagem registrada.</div>`; return; }
-  const ms = S.medidas.slice().reverse();
-  box.innerHTML = `<div style="overflow-x:auto"><table>
+  const box=document.getElementById('tabMed');
+  if(!S.medidas.length){ box.innerHTML=`<div class="empty">Nenhuma pesagem registrada.</div>`; return; }
+  const ms=S.medidas.slice().sort((a,b)=>b.data.localeCompare(a.data));
+  box.innerHTML=`<div style="overflow-x:auto"><table>
     <tr><th>Data</th><th>Peso</th><th>Gord.%</th><th>Visc.</th><th></th></tr>
     ${ms.map(m=>`<tr>
       <td>${rotuloCurto(m.data)}/${String(parseISO(m.data).getFullYear()).slice(2)}</td>
@@ -832,165 +849,143 @@ function renderTabela(){
     </tr>`).join('')}
   </table></div>`;
   box.querySelectorAll('.del').forEach(b=>{
-    b.onclick = ()=>{
+    b.onclick=()=>{
       if(!confirm('Apagar a pesagem de '+rotuloData(b.dataset.d)+'?')) return;
-      S.medidas = S.medidas.filter(m=>m.data!==b.dataset.d);
-      salvar(); renderTabela(); renderPainel(); toast('Pesagem apagada');
+      S.medidas=S.medidas.filter(m=>m.data!==b.dataset.d);
+      salvar(); renderTabela(); renderPainel(); renderHoje(); toast('Pesagem apagada');
     };
   });
 }
 
-/* ---------- editor de refeições e critérios ---------- */
-function esc(s){ return String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
-
-function renderRefs(){
-  document.getElementById('refsEditor').innerHTML = todasRefs().map((r,i)=>`
-    <div class="refbox">
-      <div class="refhead">
-        <label class="sw"><input type="checkbox" data-i="${i}" class="rAtiva" ${r.ativa?'checked':''}><i></i></label>
-        <input type="text" class="rNome" data-i="${i}" value="${esc(r.nome)}" placeholder="Nome da refeição">
-      </div>
-      ${VALORES.map(o=>`
-        <div class="critrow">
-          <span>${o.ic}</span>
-          <input type="text" class="rCrit" data-i="${i}" data-v="${o.v}"
-                 value="${esc((r.crit&&r.crit[o.v])||'')}" placeholder="${critPlaceholder(o.v)}">
-        </div>`).join('')}
-    </div>`).join('');
-}
-function critPlaceholder(v){
-  return v==='v' ? 'o que caracteriza um acerto'
-       : v==='a' ? 'o deslize aceitável'
-       : 'o que você considera fora';
-}
-
-/* Exemplos genéricos, pra editar. Não são prescrição — servem só pra mostrar
-   o nível de objetividade que faz o critério funcionar. */
-const EXEMPLOS = {
-  cafe:   {v:'Proteína (ovo/iogurte) sem pão doce e sem açúcar no café',
-           a:'Comi pão ou algo doce, mas porção pequena e uma vez só',
-           r:'Bolacha, bolo, salgado de padaria ou pulei e belisquei depois'},
-  almoco: {v:'Metade do prato de salada/legume + proteína + 1 porção de carboidrato, sem repetir',
-           a:'Segui no geral mas repeti, ou teve refrigerante, ou sobremesa',
-           r:'Fast food, fritura, repeti duas vezes ou troquei por besteira'},
-  janta:  {v:'Refeição de verdade, porção menor que o almoço, sem beliscar depois',
-           a:'Comi mais do que devia ou jantei muito tarde',
-           r:'Delivery, ultraprocessado ou belisquei até dormir'},
-  extras: {v:'Só fruta, castanha ou nada — sem doce e sem refrigerante',
-           a:'Um doce pequeno ou um refrigerante no dia',
-           r:'Vários doces, pacote inteiro, ou bebi álcool além do combinado'}
-};
-
-document.getElementById('exemploCrit').onclick = ()=>{
-  if(!confirm('Isso preenche os critérios em branco com exemplos genéricos pra você editar. Continuar?')) return;
-  lerRefsDoForm();
-  S.cfg.refs.forEach(r=>{
-    const ex = EXEMPLOS[r.id]; if(!ex) return;
-    r.crit = r.crit || {v:'',a:'',r:''};
-    ['v','a','r'].forEach(k=>{ if(!r.crit[k]) r.crit[k] = ex[k]; });
-  });
-  salvar(); renderRefs(); renderHoje();
-  toast('Exemplos preenchidos — agora edite');
-};
-
-function lerRefsDoForm(){
-  const refs = todasRefs();
-  document.querySelectorAll('.rAtiva').forEach(el=>{ refs[+el.dataset.i].ativa = el.checked; });
-  document.querySelectorAll('.rNome').forEach(el=>{
-    const v = el.value.trim(); if(v) refs[+el.dataset.i].nome = v;
-  });
-  document.querySelectorAll('.rCrit').forEach(el=>{
-    const r = refs[+el.dataset.i];
-    r.crit = r.crit || {v:'',a:'',r:''};
-    r.crit[el.dataset.v] = el.value.trim();
-  });
-  S.cfg.refs = refs;
-}
-
-document.getElementById('salvaRefs').onclick = ()=>{
-  lerRefsDoForm(); salvar(); renderRefs(); renderHoje(); renderStreak(); renderPainel();
-  toast('Refeições salvas ✓');
-};
-document.getElementById('irPlano').onclick = ()=>{
-  document.querySelector('nav button[data-p="dados"]').click();
-  setTimeout(()=>document.getElementById('secPlano').scrollIntoView({behavior:'smooth'}), 60);
-};
-
 function renderCfg(){
-  document.getElementById('cfgAlt').value = S.cfg.altura;
-  document.getElementById('cfgM1').value  = S.cfg.meta1;
-  document.getElementById('cfgM2').value  = S.cfg.meta2;
-  document.getElementById('cfgTmb').value = S.cfg.tmb;
+  const c=S.cfg;
+  document.getElementById('cfgAlt').value=c.altura;
+  document.getElementById('cfgIdade').value=c.idade;
+  document.getElementById('cfgSexo').value=c.sexo;
+  document.getElementById('cfgAtiv').value=c.atividade;
+  document.getElementById('cfgDef').value=c.deficit;
+  document.getElementById('cfgPart').value=c.partida!=null?c.partida:'';
+  document.getElementById('cfgM1').value=c.meta1;
+  document.getElementById('cfgM2').value=c.meta2;
+  const ult=ultimaMedida();
+  const b=tmb(ult?ult.peso:null), e=tdeeEstimado(ult?ult.peso:null);
+  document.getElementById('tmbNota').innerHTML = b
+    ? `Metabolismo basal estimado: <b>${Math.round(b)} kcal</b> · gasto total com atividade: <b>${Math.round(e)} kcal</b> · meta: <b>${metaDiaria()} kcal</b>. Déficit de 500 kcal/dia equivale a mais ou menos 0,45 kg por semana.`
+    : 'Registre uma pesagem pra calcular seu metabolismo.';
+  renderLemb();
 }
 document.getElementById('cfgAlt').addEventListener('input', e=>{
-  const a = parseFloat(e.target.value)/100;
-  if(a>1 && a<2.5){
-    document.getElementById('cfgM1').value = (29.9*a*a).toFixed(1);
-    document.getElementById('cfgM2').value = (24.9*a*a).toFixed(1);
+  const a=parseFloat(e.target.value)/100;
+  if(a>1&&a<2.5){
+    document.getElementById('cfgM1').value=(29.9*a*a).toFixed(1);
+    document.getElementById('cfgM2').value=(24.9*a*a).toFixed(1);
   }
 });
-document.getElementById('salvaCfg').onclick = ()=>{
-  const g = id => parseFloat(document.getElementById(id).value);
-  S.cfg = {
-    altura: g('cfgAlt')||S.cfg.altura,
-    meta1:  g('cfgM1') ||S.cfg.meta1,
-    meta2:  g('cfgM2') ||S.cfg.meta2,
-    tmb:    g('cfgTmb')||S.cfg.tmb
-  };
-  salvar(); renderPainel(); toast('Metas salvas ✓');
+document.getElementById('salvaCfg').onclick=()=>{
+  const g=id=>parseFloat(document.getElementById(id).value);
+  const c=S.cfg;
+  c.altura=g('cfgAlt')||c.altura; c.idade=g('cfgIdade')||c.idade;
+  c.sexo=document.getElementById('cfgSexo').value;
+  c.atividade=g('cfgAtiv')||c.atividade;
+  c.deficit=g('cfgDef')||c.deficit;
+  const p=g('cfgPart'); c.partida=isNaN(p)?c.partida:p;
+  c.meta1=g('cfgM1')||c.meta1; c.meta2=g('cfgM2')||c.meta2;
+  salvar(); renderCfg(); renderHoje(); renderPainel(); toast('Perfil salvo ✓');
+};
+
+/* ---------- lembretes (.ics) ---------- */
+function renderLemb(){
+  document.getElementById('lembHoras').innerHTML = S.cfg.lembretes.map((t,i)=>
+    `<div style="display:flex;gap:5px;align-items:center">
+       <input type="time" class="lh" data-i="${i}" value="${t}">
+       <button class="del" data-rm="${i}">✕</button>
+     </div>`).join('');
+  document.querySelectorAll('.lh').forEach(el=>{
+    el.onchange=()=>{ S.cfg.lembretes[+el.dataset.i]=el.value; salvar(); };
+  });
+  document.querySelectorAll('[data-rm]').forEach(b=>{
+    b.onclick=()=>{ S.cfg.lembretes.splice(+b.dataset.rm,1); salvar(); renderLemb(); };
+  });
+}
+document.getElementById('addLemb').onclick=()=>{
+  if(S.cfg.lembretes.length>=6){ toast('Máximo de 6 horários'); return; }
+  S.cfg.lembretes.push('20:00'); salvar(); renderLemb();
+};
+document.getElementById('baixaIcs').onclick=()=>{
+  const hs=S.cfg.lembretes.filter(Boolean);
+  if(!hs.length){ toast('Adicione ao menos um horário'); return; }
+  const d=new Date(); d.setDate(d.getDate()+1);
+  const ymd=`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
+  const stamp=new Date().toISOString().replace(/[-:]/g,'').split('.')[0]+'Z';
+  const L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Painel Alimentar//PT-BR','CALSCALE:GREGORIAN'];
+  hs.forEach((t,i)=>{
+    const hm=t.replace(':','')+'00';
+    L.push('BEGIN:VEVENT',
+      `UID:painel-alimentar-${ymd}-${i}@local`,
+      `DTSTAMP:${stamp}`,
+      `DTSTART;TZID=America/Sao_Paulo:${ymd}T${hm}`,
+      `DURATION:PT10M`,
+      'RRULE:FREQ=DAILY',
+      'SUMMARY:Registrar refeição 🍽️',
+      'DESCRIPTION:Fotografe o prato, peça a estimativa ao GPT e lance no painel.',
+      'BEGIN:VALARM','TRIGGER:PT0M','ACTION:DISPLAY','DESCRIPTION:Registrar refeição','END:VALARM',
+      'END:VEVENT');
+  });
+  L.push('END:VCALENDAR');
+  const blob=new Blob([L.join('\r\n')],{type:'text/calendar;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download='lembretes-painel-alimentar.ics';
+  a.click(); URL.revokeObjectURL(a.href);
+  toast('Arquivo gerado ✓');
 };
 
 /* ---------- backup ---------- */
-document.getElementById('expBtn').onclick = ()=>{
-  const blob = new Blob([JSON.stringify(S,null,2)], {type:'application/json'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `painel-alimentar-${hojeISO()}.json`;
-  a.click(); URL.revokeObjectURL(a.href);
-  toast('Backup exportado ✓');
+document.getElementById('expBtn').onclick=()=>{
+  const blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download=`painel-alimentar-${hojeISO()}.json`;
+  a.click(); URL.revokeObjectURL(a.href); toast('Backup exportado ✓');
 };
-document.getElementById('impBtn').onclick = ()=>document.getElementById('impFile').click();
-document.getElementById('impFile').onchange = e=>{
-  const f = e.target.files[0]; if(!f) return;
-  const rd = new FileReader();
-  rd.onload = ev=>{
+document.getElementById('impBtn').onclick=()=>document.getElementById('impFile').click();
+document.getElementById('impFile').onchange=e=>{
+  const f=e.target.files[0]; if(!f) return;
+  const rd=new FileReader();
+  rd.onload=ev=>{
     try{
-      const o = JSON.parse(ev.target.result);
-      if(!o.dias || !o.medidas) throw new Error('formato');
+      const o=JSON.parse(ev.target.result);
+      if(!o.medidas) throw new Error('formato');
       if(!confirm('Isso substitui todos os dados atuais. Continuar?')) return;
-      S = {...padrao(), ...o, cfg:{...padrao().cfg, ...(o.cfg||{})}};
+      S={...padrao(),...o,cfg:{...padrao().cfg,...(o.cfg||{})}};
+      // backup do formato antigo (semáforo) não tem refs — preserva o que dá
+      Object.values(S.dias||{}).forEach(d=>{ if(!d.refs) d.refs=[]; });
       salvar(); renderTudo(); toast('Backup importado ✓');
     }catch(err){ alert('Arquivo inválido ou corrompido.'); }
   };
-  rd.readAsText(f);
-  e.target.value = '';
+  rd.readAsText(f); e.target.value='';
 };
-document.getElementById('zerar').onclick = ()=>{
+document.getElementById('zerar').onclick=()=>{
   if(!confirm('Apagar TODOS os dados? Exporte um backup antes — isso não tem volta.')) return;
   if(!confirm('Tem certeza mesmo?')) return;
-  localStorage.removeItem(KEY); S = padrao(); renderTudo(); toast('Dados apagados');
+  localStorage.removeItem(KEY); S=padrao(); renderTudo(); toast('Dados apagados');
 };
 
-/* ==================================================================
-   NAVEGAÇÃO
-   ================================================================== */
+/* ---------- navegação ---------- */
 document.querySelectorAll('nav button').forEach(b=>{
-  b.onclick = ()=>{
+  b.onclick=()=>{
     document.querySelectorAll('nav button').forEach(x=>x.classList.remove('on'));
     document.querySelectorAll('.page').forEach(x=>x.classList.remove('on'));
     b.classList.add('on');
     document.getElementById('p-'+b.dataset.p).classList.add('on');
     if(b.dataset.p==='painel') renderPainel();
-    if(b.dataset.p==='dados'){ renderTabela(); renderCfg(); renderRefs(); }
+    if(b.dataset.p==='dados'){ renderTabela(); renderCfg(); }
     window.scrollTo(0,0);
   };
 });
 
-function renderTudo(){ renderHoje(); renderStreak(); renderPainel(); renderTabela(); renderCfg(); renderRefs(); }
+function renderTudo(){ renderChips(); renderHoje(); renderStreak(); renderPainel(); renderTabela(); renderCfg(); }
 
-/* vira o dia enquanto o app está aberto */
-document.addEventListener('visibilitychange', ()=>{
-  if(!document.hidden && cursor < hojeISO()){ cursor = hojeISO(); renderHoje(); renderStreak(); }
+document.addEventListener('visibilitychange',()=>{
+  if(!document.hidden && cursor<hojeISO()){ cursor=hojeISO(); renderHoje(); renderStreak(); }
 });
 
 renderTudo();

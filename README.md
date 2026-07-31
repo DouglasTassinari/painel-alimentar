@@ -1,6 +1,6 @@
 # Painel Alimentar
 
-Registro alimentar por semáforo, em um único arquivo HTML. Sem instalação, sem servidor, sem conta, sem rastreamento.
+Registro de calorias com gasto energético calculado a partir dos seus próprios dados, em um único arquivo HTML. Sem instalação, sem servidor, sem conta, sem rastreamento.
 
 **[Abrir o painel →](https://douglastassinari.github.io/painel-alimentar/)**
 
@@ -8,43 +8,34 @@ Registro alimentar por semáforo, em um único arquivo HTML. Sem instalação, s
 
 ## Por que existe
 
-Apps de contagem de calorias e planilhas de controle falham pelo mesmo motivo: **o custo de registro é alto e o retorno é lento**. Estimar a caloria de cinco refeições por dia é trabalho de pesquisa e digitação que quase ninguém sustenta por mais de duas semanas.
+Apps de contagem e planilhas falham por dois motivos: o registro custa caro e a meta é chutada. A meta padrão desses apps sai de uma fórmula genérica que não sabe nada sobre você — e quando o peso não reage, não há como distinguir "comi mais do que anotei" de "meu gasto é menor que a fórmula diz".
 
-Este painel parte de uma premissa diferente: **o registro diário tem que custar menos de 10 segundos**, ou não vai acontecer. O que ele mede não é caloria — é aderência.
-
-Um plano de 70% seguido bate um plano de 100% abandonado.
+Este painel resolve o segundo problema. **Nada nele é pré-configurado.** O metabolismo é recalculado a cada pesagem, e depois de duas semanas de registro ele abandona a fórmula e passa a usar o gasto medido dos seus dados.
 
 ## Como funciona
 
-**Primeiro, o critério** — antes de registrar qualquer coisa, você define em *Dados → Minhas refeições*:
+**Registro** — você adiciona quantas refeições fizer no dia, com o número de calorias. Sem refeição fixa e sem horário obrigatório: quem faz 2 refeições lança 2. O nome é opcional.
 
-- **quais refeições existem na sua rotina** (não toma café da manhã? desligue — o card some e para de te cobrar);
-- **o que significa cada cor em cada refeição**, escrito por você.
+Para estimar as calorias, um botão copia um prompt pronto — você cola junto com a foto do prato no GPT (ou Claude) e traz o número de volta.
 
-Isso não é opcional. Sem critério escrito, "no plano" é chute e o painel mede ruído. Um critério serve quando você decide em 2 segundos, sem pensar — "metade do prato de salada + proteína + 1 porção de carboidrato, sem repetir" serve; "comi bem" não serve.
+**O gasto é calculado, não escolhido:**
 
-**Depois, o registro** — três botões por refeição:
+1. Enquanto não há dados suficientes, usa Mifflin-St Jeor sobre a **sua última pesagem**. Cada peso novo reescreve o metabolismo basal e a meta do dia.
+2. Depois de 14 dias registrados e duas pesagens afastadas, troca a fórmula pelo **seu gasto real**:
 
-| | |
-|---|---|
-| 🟢 | no plano |
-| 🟡 | escorreguei |
-| 🔴 | fora |
+```
+gasto = consumo médio + (peso perdido × 7700) / dias
+```
 
-Mais um botão **não fiz essa refeição**, que é neutro: não entra nem no numerador nem no denominador da aderência. Pular o que você não come não é acerto nem erro, e tratar como um dos dois distorce a média.
+Só existe um gasto que explica ao mesmo tempo o que você comeu e o que a balança mostrou. Esse número vale mais que qualquer fórmula, e se refaz a cada pesagem nova.
 
-Dia inteiro registrado em três ou quatro toques. Zero digitação, zero consulta a tabela nutricional. Dá pra voltar e preencher dias esquecidos, e o `?` ao lado de cada refeição mostra seu critério na hora de decidir.
+**Isso corrige o erro da estimativa por foto.** Estimar caloria por imagem erra 20–30%. Mas se o erro é consistente, ele se cancela: um consumo registrado 20% abaixo do real produz um gasto calculado 20% menor, e o déficit efetivamente entregue continua o mesmo. Por isso a regra é usar sempre a mesma ferramenta e o mesmo prompt — consistência importa mais que exatidão.
 
-**Painel**
+O cálculo só é aceito com pelo menos 10 dias registrados, 60% de cobertura do período e duas pesagens a 14+ dias de distância. Faltando qualquer uma dessas condições, o painel volta pra fórmula em vez de inventar número.
 
-- Aderência de 7 e 30 dias, ponderada (🟢 = 1, 🟡 = 0,5, 🔴 = 0)
-- Sequência de dias registrados
-- Peso em **média móvel de 7 dias** — a balança oscila cerca de 1 kg só por variação de água e sódio; a média móvel é o que revela tendência real
-- Tendência em kg/semana por regressão linear sobre os **últimos 90 dias** (a série inteira dilui o momento atual em platôs antigos)
-- Barras de progresso até duas metas, com previsão de data derivada da tendência
-- Mapa de calor de 12 semanas — é onde padrões semanais aparecem
+**Painel** — média de consumo de 7 dias, déficit médio contra o gasto, sequência de dias, peso em média móvel de 7 dias, tendência por regressão dos últimos 90 dias, barras de progresso com previsão de data, gráfico de consumo diário colorido pela meta e mapa de calor de 12 semanas.
 
-**Detecção de bioimpedância derivada** — muitas balanças domésticas não medem composição corporal de forma independente: calculam por fórmula a partir de peso, altura, idade e sexo. O painel testa isso nos seus próprios dados, correlacionando % de gordura com peso e checando se pesos repetidos devolveram valores idênticos. Se a correlação passar de 0,97, ele avisa que aquele número não é informação nova.
+**Lembretes** — um site não notifica com o app fechado (no iPhone é bloqueado, no Android é instável). Em vez de prometer o que não funciona, o painel gera um arquivo `.ics` com lembretes recorrentes nos horários que você escolher: importa uma vez no Google Agenda ou no Calendário e o próprio celular te lembra.
 
 ## Dados
 
@@ -67,7 +58,7 @@ Vira ícone e abre em tela cheia, como app nativo.
 git clone https://github.com/DouglasTassinari/painel-alimentar.git
 ```
 
-Abra o `index.html` no navegador. É só isso — sem build, sem dependências. Os gráficos são SVG gerado à mão, funciona offline.
+Abra o `index.html` no navegador. Sem build, sem dependências. Os gráficos são SVG gerado à mão e funciona offline.
 
 ## Importar histórico de balança
 
@@ -75,7 +66,11 @@ Balanças com app (Mi Fit/Zepp, Renpho e similares) costumam exportar `.xlsx`. C
 
 ```json
 {
-  "cfg": { "altura": 175, "meta1": 91.6, "meta2": 76.3, "partida": 82.0 },
+  "cfg": {
+    "altura": 175, "idade": 30, "sexo": "m",
+    "atividade": 1.2, "deficit": 500,
+    "meta1": 91.6, "meta2": 76.3, "partida": 82.0
+  },
   "dias": {},
   "medidas": [
     { "data": "2026-01-15", "peso": 80.5, "gordura": 22.0, "visceral": 10.0 }
@@ -83,15 +78,15 @@ Balanças com app (Mi Fit/Zepp, Renpho e similares) costumam exportar `.xlsx`. C
 }
 ```
 
-`gordura`, `visceral`, `agua` e `musculo` são opcionais — só `data` e `peso` são obrigatórios. Importe em `Dados → Importar backup`.
+Em `medidas`, só `data` e `peso` são obrigatórios. Em `dias`, o formato é `{"2026-01-15": {"refs": [{"n": "Almoço", "k": 850, "h": "12:30"}]}}`. Importe em `Dados → Importar backup`.
+
+`atividade` é o multiplicador sobre o metabolismo basal: 1.2 sedentário, 1.375 leve, 1.55 moderado, 1.725 intenso. Ele só vale até o painel ter dados suficientes para calcular o gasto real — a partir daí é ignorado.
 
 ## O que ele faz e o que ele não faz
 
-**Não faz:** dizer o que comer, calcular calorias, ou emagrecer alguém. O que causa perda de peso é o déficit calórico — este painel não cria déficit nenhum.
+**Não faz:** dizer o que comer, montar cardápio, ou emagrecer alguém. Quem causa perda de peso é o déficit calórico, e o painel não cria déficit nenhum.
 
-**Faz:** medir se você seguiu o plano que você definiu, e mostrar *quando* você não seguiu. É instrumento de medição, não tratamento. Se o plano não presta, o painel vai registrar aderência alta enquanto o peso não se mexe — e isso também é informação útil: significa que o problema é a calibragem, não a disciplina.
-
-O plano em si vale a pena vir de nutricionista.
+**Faz:** medir seu consumo, descobrir seu gasto real, e mostrar a distância entre os dois. Se o peso não reage com o consumo registrado abaixo do gasto, isso aponta pra subestimativa nas fotos ou dias não registrados — e essa também é uma resposta útil, que uma planilha não dá.
 
 ## Aviso
 
