@@ -61,6 +61,33 @@ header{display:flex;align-items:center;justify-content:space-between;gap:10px;ma
 .opt.on[data-v="a"]{background:rgba(240,180,41,.16);border-color:var(--amarelo);color:var(--amarelo)}
 .opt.on[data-v="r"]{background:rgba(239,68,68,.16);border-color:var(--vermelho);color:var(--vermelho)}
 
+.skip{
+  width:100%;margin-top:8px;background:none;border:1px dashed var(--line);color:var(--dim2);
+  border-radius:9px;padding:8px;font-size:11.5px;cursor:pointer;font-family:inherit
+}
+.skip.on{border-style:solid;border-color:var(--dim2);color:var(--txt);background:var(--card2)}
+.qmark{
+  background:var(--card2);border:1px solid var(--line);color:var(--dim);
+  width:19px;height:19px;border-radius:50%;font-size:11px;cursor:pointer;
+  padding:0;margin-left:5px;font-family:inherit;vertical-align:middle;line-height:1
+}
+.crit{margin-top:10px;padding:10px;background:var(--card2);border-radius:9px;font-size:12.5px;line-height:1.55}
+.crit div{margin-bottom:5px}
+.crit div:last-child{margin-bottom:0}
+.warn{border-color:var(--amarelo);background:rgba(240,180,41,.07)}
+.refbox{background:var(--card2);border:1px solid var(--line);border-radius:11px;padding:12px;margin-bottom:10px}
+.refhead{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+.refhead input[type=text]{flex:1;font-size:14px;padding:8px 10px}
+.sw{position:relative;width:40px;height:23px;flex:none;cursor:pointer}
+.sw input{opacity:0;width:0;height:0;position:absolute}
+.sw i{position:absolute;inset:0;background:var(--line);border-radius:99px;transition:.18s}
+.sw i:before{content:"";position:absolute;width:17px;height:17px;left:3px;top:3px;background:var(--dim);border-radius:50%;transition:.18s}
+.sw input:checked + i{background:rgba(34,197,94,.35)}
+.sw input:checked + i:before{transform:translateX(17px);background:var(--verde)}
+.critrow{display:flex;align-items:flex-start;gap:8px;margin-top:7px}
+.critrow span{font-size:15px;line-height:1.9;flex:none}
+.critrow input{font-size:13px;padding:8px 10px}
+
 /* ---------- pesagem ---------- */
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 label{display:block;font-size:11px;color:var(--dim);margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px;font-weight:600}
@@ -159,6 +186,15 @@ td.num{font-variant-numeric:tabular-nums}
     <button id="nextD">›</button>
   </div>
 
+  <div class="card warn" id="semCrit" hidden>
+    <b>Defina seu plano primeiro.</b>
+    <p style="margin:7px 0 11px;font-size:13px;line-height:1.5">
+      Sem um critério escrito, "no plano" vira chute e o painel não mede nada.
+      Leva 5 minutos, e é uma vez só.
+    </p>
+    <button class="btn sm" id="irPlano">Definir critérios das refeições</button>
+  </div>
+
   <div id="meals"></div>
 
   <div class="card">
@@ -191,6 +227,20 @@ td.num{font-variant-numeric:tabular-nums}
 <!-- ============ DADOS ============ -->
 <section class="page" id="p-dados">
   <header><div><h1>Dados</h1><p class="sub">Histórico, metas e backup</p></div></header>
+
+  <h2 id="secPlano">Minhas refeições</h2>
+  <div class="card">
+    <p class="note" style="margin:0 0 12px">
+      Desligue o que não faz parte da sua rotina — se você não toma café da manhã,
+      esse card some da tela e para de te cobrar. E escreva o critério de cada cor:
+      é ele que transforma "achei que foi ok" em medida. Critério bom é o que você
+      decide em 2 segundos, sem pensar.
+    </p>
+    <div id="refsEditor"></div>
+    <button class="btn ghost sm" id="salvaRefs">Salvar refeições e critérios</button>
+    <div style="height:8px"></div>
+    <button class="btn ghost sm" id="exemploCrit">Preencher com exemplos pra eu editar</button>
+  </div>
 
   <h2>Metas</h2>
   <div class="card">
@@ -237,19 +287,30 @@ td.num{font-variant-numeric:tabular-nums}
    ================================================================== */
 
 const KEY = 'painel-alimentar-v1';
-const REFS = [
-  {id:'cafe',   nome:'Café da manhã', hint:'até ~10h'},
-  {id:'almoco', nome:'Almoço',        hint:'refeição principal'},
-  {id:'janta',  nome:'Janta',         hint:'última refeição'},
-  {id:'extras', nome:'Extras',        hint:'lanches, bebidas, doces'}
+
+/* Refeições padrão. São só um ponto de partida — o usuário edita nomes,
+   liga/desliga e, principalmente, escreve o critério de cada cor.
+   Sem critério escrito, o semáforo não mede nada. */
+const REFS_PADRAO = [
+  {id:'cafe',   nome:'Café da manhã', hint:'primeira refeição', ativa:true,
+   crit:{v:'', a:'', r:''}},
+  {id:'almoco', nome:'Almoço',        hint:'refeição principal', ativa:true,
+   crit:{v:'', a:'', r:''}},
+  {id:'janta',  nome:'Janta',         hint:'última refeição', ativa:true,
+   crit:{v:'', a:'', r:''}},
+  {id:'extras', nome:'Extras',        hint:'lanches, bebidas, doces', ativa:true,
+   crit:{v:'', a:'', r:''}}
 ];
 const VALORES = [
-  {v:'v', ic:'🟢', lab:'No plano', peso:1},
-  {v:'a', ic:'🟡', lab:'Escorreguei', peso:0.5},
-  {v:'r', ic:'🔴', lab:'Fora', peso:0}
+  {v:'v', ic:'🟢', lab:'No plano'},
+  {v:'a', ic:'🟡', lab:'Escorreguei'},
+  {v:'r', ic:'🔴', lab:'Fora'}
 ];
+/* 'p' = não fiz essa refeição. Neutro: não entra no numerador nem no
+   denominador da aderência. Pular o que você não come não é acerto nem erro. */
 const PESO_DE = {v:1, a:0.5, r:0};
-const COR_DE  = {v:'var(--verde)', a:'var(--amarelo)', r:'var(--vermelho)'};
+const refsAtivas = () => (S.cfg.refs||REFS_PADRAO).filter(r=>r.ativa);
+const todasRefs  = () => (S.cfg.refs||REFS_PADRAO);
 
 /* ---------- estado ---------- */
 let S = carregar();
@@ -259,7 +320,8 @@ function padrao(){
   return {
     /* partida = peso no dia em que o painel começou a ser usado. Definido na
        1ª pesagem; sem ele a barra de progresso partiria do registro mais antigo. */
-    cfg: {altura:175, meta1:91.6, meta2:76.3, tmb:2000, partida:null},
+    cfg: {altura:175, meta1:91.6, meta2:76.3, tmb:2000, partida:null,
+          refs: JSON.parse(JSON.stringify(REFS_PADRAO))},
     dias: {},
     medidas: []
   };
@@ -317,11 +379,17 @@ function renderHoje(){
   document.getElementById('nextD').disabled = cursor >= hojeISO();
 
   const dia = S.dias[cursor] || {};
-  document.getElementById('meals').innerHTML = REFS.map(r=>`
+  const ativas = refsAtivas();
+
+  document.getElementById('meals').innerHTML = ativas.length ? ativas.map(r=>{
+    const temCrit = r.crit && (r.crit.v||r.crit.a||r.crit.r);
+    return `
     <div class="meal">
       <div class="meal-top">
-        <span class="meal-name">${r.nome}</span>
-        <span class="meal-hint">${r.hint}</span>
+        <span class="meal-name">${r.nome}
+          ${temCrit?`<button class="qmark" data-crit="${r.id}" title="ver critério">?</button>`:''}
+        </span>
+        <span class="meal-hint">${r.hint||''}</span>
       </div>
       <div class="opts">
         ${VALORES.map(o=>`
@@ -329,9 +397,17 @@ function renderHoje(){
             <span class="ic">${o.ic}</span>${o.lab}
           </button>`).join('')}
       </div>
-    </div>`).join('');
+      <button class="skip ${dia[r.id]==='p'?'on':''}" data-v="p" data-ref="${r.id}">não fiz essa refeição</button>
+      ${temCrit?`<div class="crit" id="crit-${r.id}" hidden>
+        ${r.crit.v?`<div><b style="color:var(--verde)">🟢</b> ${esc(r.crit.v)}</div>`:''}
+        ${r.crit.a?`<div><b style="color:var(--amarelo)">🟡</b> ${esc(r.crit.a)}</div>`:''}
+        ${r.crit.r?`<div><b style="color:var(--vermelho)">🔴</b> ${esc(r.crit.r)}</div>`:''}
+      </div>`:''}
+    </div>`;
+  }).join('') : `<div class="card"><div class="empty">Nenhuma refeição ativa.<br>Configure em <b>Dados → Minhas refeições</b>.</div></div>`;
 
-  document.getElementById('meals').querySelectorAll('.opt').forEach(b=>{
+  const cx = document.getElementById('meals');
+  cx.querySelectorAll('.opt, .skip').forEach(b=>{
     b.onclick = ()=>{
       const ref = b.dataset.ref, v = b.dataset.v;
       if(!S.dias[cursor]) S.dias[cursor] = {};
@@ -340,6 +416,13 @@ function renderHoje(){
       salvar(); renderHoje(); renderStreak();
     };
   });
+  cx.querySelectorAll('.qmark').forEach(b=>{
+    b.onclick = ()=>{ const el = document.getElementById('crit-'+b.dataset.crit); el.hidden = !el.hidden; };
+  });
+
+  /* aviso enquanto não houver critério definido em nenhuma refeição */
+  const semCrit = ativas.length && !ativas.some(r=>r.crit && (r.crit.v||r.crit.a||r.crit.r));
+  document.getElementById('semCrit').hidden = !semCrit;
 
   document.getElementById('nota').value = dia.nota || '';
   document.getElementById('mData').value = cursor;
@@ -356,7 +439,7 @@ document.getElementById('nextD').onclick = ()=>{ if(cursor<hojeISO()){ cursor = 
 /* ---------- streak: dias consecutivos com algum registro ---------- */
 function temRegistro(iso){
   const d = S.dias[iso]; if(!d) return false;
-  return REFS.some(r=>d[r.id]);
+  return refsAtivas().some(r=>d[r.id]);   // 'p' conta como registro do dia
 }
 function calcStreak(){
   let n = 0, c = hojeISO();
@@ -367,9 +450,11 @@ function calcStreak(){
 function renderStreak(){
   const n = calcStreak();
   const dia = S.dias[cursor]||{};
-  const feitas = REFS.filter(r=>dia[r.id]).length;
+  const at = refsAtivas();
+  const feitas = at.filter(r=>dia[r.id]).length;
   document.getElementById('streakTop').textContent =
-    n>0 ? `🔥 ${n} ${n===1?'dia seguido':'dias seguidos'} · ${feitas}/4 hoje` : `${feitas}/4 refeições registradas`;
+    n>0 ? `🔥 ${n} ${n===1?'dia seguido':'dias seguidos'} · ${feitas}/${at.length} hoje`
+        : `${feitas}/${at.length} refeições registradas`;
 }
 
 /* ---------- pesagem ---------- */
@@ -422,7 +507,12 @@ function aderencia(ini, fim){
   for(let c=ini; c<=fim; c=addDias(c,1)){
     const d = S.dias[c]; if(!d) continue;
     let achou=false;
-    REFS.forEach(r=>{ if(d[r.id]){ pts+=PESO_DE[d[r.id]]; tot++; achou=true; } });
+    refsAtivas().forEach(r=>{
+      const v = d[r.id]; if(!v) return;
+      achou = true;
+      if(v==='p') return;                       // pulou: neutro, fica fora da média
+      pts += PESO_DE[v]; tot++;
+    });
     if(achou) dias++;
   }
   return {pct: tot ? pts/tot*100 : null, registros:tot, dias};
@@ -694,14 +784,21 @@ function heatmap(){
   let html = `<div class="heat">${['D','S','T','Q','Q','S','S'].map(d=>`<div class="hd">${d}</div>`).join('')}`;
   for(let c=ini; c<=fimSem; c=addDias(c,1)){
     const d = S.dias[c];
-    const marc = d ? REFS.map(r=>d[r.id]).filter(Boolean) : [];
+    const at = refsAtivas();
+    const marc = d ? at.map(r=>d[r.id]).filter(Boolean) : [];
+    const aval = marc.filter(v=>v!=='p');       // 'p' não entra na nota do dia
     let bg='', cls='c', tit = rotuloData(c);
     if(marc.length){
-      const sc = marc.reduce((s,v)=>s+PESO_DE[v],0)/marc.length;
-      const cor = sc>=0.85?'34,197,94' : sc>=0.5?'240,180,41' : '239,68,68';
-      const op = 0.32 + 0.68*(marc.length/REFS.length);
-      bg = `background:rgba(${cor},${op.toFixed(2)})`;
-      tit += ` — ${marc.length}/4 · ${Math.round(sc*100)}%`;
+      if(aval.length){
+        const sc = aval.reduce((s,v)=>s+PESO_DE[v],0)/aval.length;
+        const cor = sc>=0.85?'34,197,94' : sc>=0.5?'240,180,41' : '239,68,68';
+        const op = 0.32 + 0.68*(marc.length/Math.max(at.length,1));
+        bg = `background:rgba(${cor},${op.toFixed(2)})`;
+        tit += ` — ${aval.length}/${at.length} · ${Math.round(sc*100)}%`;
+      } else {
+        bg = `background:rgba(107,114,128,.35)`;   // dia inteiro pulado
+        tit += ' — todas as refeições puladas';
+      }
     } else if(c<=h){
       cls += ' f'; tit += ' — sem registro';
     }
@@ -742,6 +839,82 @@ function renderTabela(){
     };
   });
 }
+
+/* ---------- editor de refeições e critérios ---------- */
+function esc(s){ return String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+function renderRefs(){
+  document.getElementById('refsEditor').innerHTML = todasRefs().map((r,i)=>`
+    <div class="refbox">
+      <div class="refhead">
+        <label class="sw"><input type="checkbox" data-i="${i}" class="rAtiva" ${r.ativa?'checked':''}><i></i></label>
+        <input type="text" class="rNome" data-i="${i}" value="${esc(r.nome)}" placeholder="Nome da refeição">
+      </div>
+      ${VALORES.map(o=>`
+        <div class="critrow">
+          <span>${o.ic}</span>
+          <input type="text" class="rCrit" data-i="${i}" data-v="${o.v}"
+                 value="${esc((r.crit&&r.crit[o.v])||'')}" placeholder="${critPlaceholder(o.v)}">
+        </div>`).join('')}
+    </div>`).join('');
+}
+function critPlaceholder(v){
+  return v==='v' ? 'o que caracteriza um acerto'
+       : v==='a' ? 'o deslize aceitável'
+       : 'o que você considera fora';
+}
+
+/* Exemplos genéricos, pra editar. Não são prescrição — servem só pra mostrar
+   o nível de objetividade que faz o critério funcionar. */
+const EXEMPLOS = {
+  cafe:   {v:'Proteína (ovo/iogurte) sem pão doce e sem açúcar no café',
+           a:'Comi pão ou algo doce, mas porção pequena e uma vez só',
+           r:'Bolacha, bolo, salgado de padaria ou pulei e belisquei depois'},
+  almoco: {v:'Metade do prato de salada/legume + proteína + 1 porção de carboidrato, sem repetir',
+           a:'Segui no geral mas repeti, ou teve refrigerante, ou sobremesa',
+           r:'Fast food, fritura, repeti duas vezes ou troquei por besteira'},
+  janta:  {v:'Refeição de verdade, porção menor que o almoço, sem beliscar depois',
+           a:'Comi mais do que devia ou jantei muito tarde',
+           r:'Delivery, ultraprocessado ou belisquei até dormir'},
+  extras: {v:'Só fruta, castanha ou nada — sem doce e sem refrigerante',
+           a:'Um doce pequeno ou um refrigerante no dia',
+           r:'Vários doces, pacote inteiro, ou bebi álcool além do combinado'}
+};
+
+document.getElementById('exemploCrit').onclick = ()=>{
+  if(!confirm('Isso preenche os critérios em branco com exemplos genéricos pra você editar. Continuar?')) return;
+  lerRefsDoForm();
+  S.cfg.refs.forEach(r=>{
+    const ex = EXEMPLOS[r.id]; if(!ex) return;
+    r.crit = r.crit || {v:'',a:'',r:''};
+    ['v','a','r'].forEach(k=>{ if(!r.crit[k]) r.crit[k] = ex[k]; });
+  });
+  salvar(); renderRefs(); renderHoje();
+  toast('Exemplos preenchidos — agora edite');
+};
+
+function lerRefsDoForm(){
+  const refs = todasRefs();
+  document.querySelectorAll('.rAtiva').forEach(el=>{ refs[+el.dataset.i].ativa = el.checked; });
+  document.querySelectorAll('.rNome').forEach(el=>{
+    const v = el.value.trim(); if(v) refs[+el.dataset.i].nome = v;
+  });
+  document.querySelectorAll('.rCrit').forEach(el=>{
+    const r = refs[+el.dataset.i];
+    r.crit = r.crit || {v:'',a:'',r:''};
+    r.crit[el.dataset.v] = el.value.trim();
+  });
+  S.cfg.refs = refs;
+}
+
+document.getElementById('salvaRefs').onclick = ()=>{
+  lerRefsDoForm(); salvar(); renderRefs(); renderHoje(); renderStreak(); renderPainel();
+  toast('Refeições salvas ✓');
+};
+document.getElementById('irPlano').onclick = ()=>{
+  document.querySelector('nav button[data-p="dados"]').click();
+  setTimeout(()=>document.getElementById('secPlano').scrollIntoView({behavior:'smooth'}), 60);
+};
 
 function renderCfg(){
   document.getElementById('cfgAlt').value = S.cfg.altura;
@@ -808,12 +981,12 @@ document.querySelectorAll('nav button').forEach(b=>{
     b.classList.add('on');
     document.getElementById('p-'+b.dataset.p).classList.add('on');
     if(b.dataset.p==='painel') renderPainel();
-    if(b.dataset.p==='dados'){ renderTabela(); renderCfg(); }
+    if(b.dataset.p==='dados'){ renderTabela(); renderCfg(); renderRefs(); }
     window.scrollTo(0,0);
   };
 });
 
-function renderTudo(){ renderHoje(); renderStreak(); renderPainel(); renderTabela(); renderCfg(); }
+function renderTudo(){ renderHoje(); renderStreak(); renderPainel(); renderTabela(); renderCfg(); renderRefs(); }
 
 /* vira o dia enquanto o app está aberto */
 document.addEventListener('visibilitychange', ()=>{

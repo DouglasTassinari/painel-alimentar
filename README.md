@@ -16,7 +16,14 @@ Um plano de 70% seguido bate um plano de 100% abandonado.
 
 ## Como funciona
 
-**Registro** — quatro refeições, três botões cada:
+**Primeiro, o critério** — antes de registrar qualquer coisa, você define em *Dados → Minhas refeições*:
+
+- **quais refeições existem na sua rotina** (não toma café da manhã? desligue — o card some e para de te cobrar);
+- **o que significa cada cor em cada refeição**, escrito por você.
+
+Isso não é opcional. Sem critério escrito, "no plano" é chute e o painel mede ruído. Um critério serve quando você decide em 2 segundos, sem pensar — "metade do prato de salada + proteína + 1 porção de carboidrato, sem repetir" serve; "comi bem" não serve.
+
+**Depois, o registro** — três botões por refeição:
 
 | | |
 |---|---|
@@ -24,7 +31,9 @@ Um plano de 70% seguido bate um plano de 100% abandonado.
 | 🟡 | escorreguei |
 | 🔴 | fora |
 
-Dia inteiro registrado em quatro toques. Zero digitação, zero consulta a tabela nutricional. Dá pra voltar e preencher dias esquecidos.
+Mais um botão **não fiz essa refeição**, que é neutro: não entra nem no numerador nem no denominador da aderência. Pular o que você não come não é acerto nem erro, e tratar como um dos dois distorce a média.
+
+Dia inteiro registrado em três ou quatro toques. Zero digitação, zero consulta a tabela nutricional. Dá pra voltar e preencher dias esquecidos, e o `?` ao lado de cada refeição mostra seu critério na hora de decidir.
 
 **Painel**
 
@@ -75,6 +84,14 @@ Balanças com app (Mi Fit/Zepp, Renpho e similares) costumam exportar `.xlsx`. C
 ```
 
 `gordura`, `visceral`, `agua` e `musculo` são opcionais — só `data` e `peso` são obrigatórios. Importe em `Dados → Importar backup`.
+
+## O que ele faz e o que ele não faz
+
+**Não faz:** dizer o que comer, calcular calorias, ou emagrecer alguém. O que causa perda de peso é o déficit calórico — este painel não cria déficit nenhum.
+
+**Faz:** medir se você seguiu o plano que você definiu, e mostrar *quando* você não seguiu. É instrumento de medição, não tratamento. Se o plano não presta, o painel vai registrar aderência alta enquanto o peso não se mexe — e isso também é informação útil: significa que o problema é a calibragem, não a disciplina.
+
+O plano em si vale a pena vir de nutricionista.
 
 ## Aviso
 
