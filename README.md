@@ -33,7 +33,19 @@ Só existe um gasto que explica ao mesmo tempo o que você comeu e o que a balan
 
 O cálculo só é aceito com pelo menos 10 dias registrados, 60% de cobertura do período e duas pesagens a 14+ dias de distância. Faltando qualquer uma dessas condições, o painel volta pra fórmula em vez de inventar número.
 
-**Painel** — média de consumo de 7 dias, déficit médio contra o gasto, sequência de dias, peso em média móvel de 7 dias, tendência por regressão dos últimos 90 dias, barras de progresso com previsão de data, gráfico de consumo diário colorido pela meta e mapa de calor de 12 semanas.
+**A pergunta que ele responde: seus hábitos atuais te levam a emagrecer ou engordar?**
+
+```
+saldo do dia    = calorias consumidas − gasto energético
+saldo médio     = soma dos saldos ÷ dias registrados   (últimos 30 dias)
+kg por semana   = saldo médio × 7 ÷ 7700
+```
+
+A janela é de 30 dias, ou todo o histórico se houver menos que isso. **Dias sem registro não entram como zero** — ficam de fora da média, e a divisão é só pelos dias registrados. A projeção parte da última pesagem e aplica essa variação dia a dia; o gráfico mostra a linha do peso real pelas pesagens e, tracejada, para onde o saldo calórico atual leva nas 4 semanas seguintes.
+
+O painel exibe junto quantos dias sustentam a conta, porque 25 dias registrados e 4 dias registrados produzem o mesmo formato de frase e valem coisas muito diferentes.
+
+**Painel** — média de consumo de 7 dias, déficit médio contra o gasto, tendência de peso pelo saldo calórico, sequência de dias, peso em média móvel de 7 dias, tendência por regressão dos últimos 90 dias, barras de progresso com previsão de data, gráfico de consumo diário colorido pela meta e mapa de calor de 12 semanas.
 
 **Lembretes** — um site não notifica com o app fechado (no iPhone é bloqueado, no Android é instável). Em vez de prometer o que não funciona, o painel gera um arquivo `.ics` com lembretes recorrentes nos horários que você escolher: importa uma vez no Google Agenda ou no Calendário e o próprio celular te lembra.
 

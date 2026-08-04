@@ -81,6 +81,11 @@ textarea{resize:vertical;min-height:52px;font-size:14px}
 .kpi .k-sub{font-size:11.5px;color:var(--dim2);margin-top:2px}
 .k-val small{font-size:13px;font-weight:600;color:var(--dim)}
 
+.trendbig{font-size:16.5px;line-height:1.4;font-weight:600;letter-spacing:-.2px}
+.trendbig b{font-size:21px;letter-spacing:-.6px}
+.linha{display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:9px}
+.linha span{color:var(--dim)}
+
 .goal{margin-bottom:16px}
 .goal-top{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;margin-bottom:7px}
 
@@ -554,6 +559,50 @@ function tendencia(serie){
   const a=(n*sxy-sx*sy)/den;
   return {porDia:a, porSemana:a*7};
 }
+/* primeiro dia com refeição registrada (ignora datas futuras) */
+function primeiroDiaRegistrado(){
+  const h = hojeISO();
+  const ds = Object.keys(S.dias).filter(d=>d<=h && kcalDoDia(d)>0).sort();
+  return ds.length ? ds[0] : null;
+}
+
+/* Tendência de peso pelo saldo calórico médio.
+      saldo do dia = consumido − gasto
+   Janela de 30 dias (ou todo o histórico, se for menor). Dias sem registro
+   ficam de fora da conta — não entram como zero — e a média divide só pelos
+   dias registrados. 7700 kcal ≈ 1 kg. */
+function tendenciaCalorica(){
+  const g = gastoAtual();
+  const ult = ultimaMedida();
+  if(!g || !ult) return null;
+
+  const h = hojeISO();
+  const prim = primeiroDiaRegistrado();
+  if(!prim) return null;
+
+  let ini = addDias(h,-29);
+  if(prim > ini) ini = prim;                    // histórico menor que 30 dias
+  const janelaDias = diffDias(ini,h)+1;
+
+  let soma=0, n=0;
+  for(let c=ini; c<=h; c=addDias(c,1)){
+    const k = kcalDoDia(c);
+    if(k>0){ soma+=k; n++; }                    // dia sem registro não conta
+  }
+  if(!n) return null;
+
+  const consumoMedio = soma/n;
+  const saldoMedio   = consumoMedio - g.v;      // positivo = sobra energia
+  const kgPorDia     = saldoMedio/KCAL_POR_KG;
+
+  return {kgPorDia, kgPorSemana:kgPorDia*7, saldoMedio, consumoMedio,
+          gasto:g.v, fonte:g.fonte, nDias:n, janelaDias, ini, fim:h, ult};
+}
+/* peso projetado numa data: parte da última pesagem e aplica a variação estimada */
+function pesoProjetado(tc, iso){
+  return tc.ult.peso + tc.kgPorDia*diffDias(tc.ult.data, iso);
+}
+
 /* estatística de consumo num intervalo */
 function consumo(ini,fim){
   let soma=0, n=0, acima=0;
@@ -645,6 +694,54 @@ function renderPainel(){
     }
   } else {
     out += `<div class="empty">Registre uma pesagem<br>pra calcular sua meta diária.</div>`;
+  }
+  out += `</div>`;
+
+  /* ---- tendência de peso pelo saldo calórico ---- */
+  const tc = tendenciaCalorica();
+  out += `<h2>Tendência de peso</h2><div class="card">`;
+  if(tc){
+    const sem = tc.kgPorSemana;
+    const perde = sem < -0.01, ganha = sem > 0.01;
+    const cor = perde ? 'var(--verde)' : ganha ? 'var(--vermelho)' : 'var(--dim)';
+    const frase = perde ? `tendência é <b>perder ${fmt(Math.abs(sem),2)} kg</b> por semana`
+                : ganha ? `tendência é <b>ganhar ${fmt(Math.abs(sem),2)} kg</b> por semana`
+                        : `tendência é <b>manter o peso</b>`;
+    const proj28 = pesoProjetado(tc, addDias(tc.fim,28));
+    const sal = Math.round(tc.saldoMedio);
+
+    out += `<div class="trendbig" style="color:${cor}">No ritmo atual, ${frase}</div>
+      <div class="hr"></div>
+      <div class="linha"><span>Consumo médio</span><b>${Math.round(tc.consumoMedio)} kcal/dia</b></div>
+      <div class="linha"><span>Gasto ${tc.fonte==='real'?'calculado':'estimado'}</span><b>${Math.round(tc.gasto)} kcal/dia</b></div>
+      <div class="linha"><span>Saldo diário</span>
+        <b style="color:${cor}">${sal>0?'+':sal<0?'−':''}${Math.abs(sal)} kcal</b></div>
+      <div class="linha" style="margin-bottom:0"><span>Projeção em 4 semanas</span>
+        <b>${fmt(proj28,1)} kg <small style="color:var(--dim2);font-weight:500">(pesagem: ${fmt(tc.ult.peso,1)})</small></b></div>`;
+
+    out += `<div style="height:14px"></div>` + graficoProjecao(meds, tc);
+
+    out += `<p class="note">Tendência baseada em <b>${tc.nDias} ${tc.nDias===1?'dia registrado':'dias registrados'}</b>
+      ${tc.janelaDias===30 ? 'nos últimos 30 dias' : `nos últimos ${tc.janelaDias} dias (todo o seu histórico)`}.
+      Dias sem registro ficam de fora da média — não entram como zero.</p>`;
+
+    if(tc.nDias < 7){
+      out += `<p class="note">Com menos de uma semana registrada, um único dia fora do padrão move a projeção
+        inteira. Trate como indício, não como previsão.</p>`;
+    } else if(tc.janelaDias>=14 && tc.nDias/tc.janelaDias < 0.5){
+      out += `<p class="note">Menos da metade dos dias tem registro. Os dias que faltam costumam ser os de maior
+        consumo, então a tendência aqui provavelmente está otimista demais.</p>`;
+    }
+    if(tc.fonte==='estimado'){
+      out += `<p class="note">O gasto ainda vem de fórmula, então esta projeção herda o erro dela (15% pra qualquer
+        lado). Depois de 14 dias registrados e duas pesagens afastadas, ela passa a usar seu gasto real.</p>`;
+    } else {
+      out += `<p class="note">Como o gasto foi calculado da sua própria variação de peso, enquanto seu consumo
+        estiver na média de sempre esta linha vai repetir o que a balança já vinha mostrando. Ela se descola
+        justamente quando você muda de hábito — é aí que serve de aviso.</p>`;
+    }
+  } else {
+    out += `<div class="empty">Registre uma pesagem e pelo menos um dia<br>de refeições pra ver a tendência.</div>`;
   }
   out += `</div>`;
 
@@ -763,6 +860,58 @@ function graficoKcal(serie, meta){
         <span><i class="dot" style="background:#22c55e"></i>dentro da meta</span>
         <span><i class="dot" style="background:#f0b429"></i>até 10% acima</span>
         <span><i class="dot" style="background:#ef4444"></i>mais que isso</span>
+      </div>`;
+  return g;
+}
+
+/* ---------- gráfico de projeção: peso real × tendência pelas calorias ---------- */
+function graficoProjecao(meds, tc){
+  const W=560,H=210,ml=44,mr=10,mt=14,mb=26;
+  const HORIZ=28;                                  // 4 semanas à frente
+  const h = hojeISO();
+  const fimProj = addDias(h, HORIZ);
+
+  let vis = meds.filter(m=>diffDias(m.data,h)<=90); // janela legível
+  if(vis.length<2) vis = meds.slice(-2);
+
+  const d0=parseISO(vis[0].data), d1=parseISO(fimProj);
+  const span=Math.max(1,(d1-d0)/864e5);
+  const X=iso=>ml+((parseISO(iso)-d0)/864e5)/span*(W-ml-mr);
+
+  const pFim = pesoProjetado(tc, fimProj);
+  const vals = vis.map(m=>m.peso).concat([tc.ult.peso, pFim]);
+  let lo=Math.min(...vals), hi=Math.max(...vals);
+  const pad=Math.max(0.8,(hi-lo)*0.18); lo-=pad; hi+=pad;
+  const Y=v=>mt+(1-(v-lo)/(hi-lo))*(H-mt-mb);
+
+  let g=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Peso real e tendência projetada pelas calorias">`;
+  for(let i=0;i<=3;i++){
+    const v=lo+(hi-lo)*i/3, y=Y(v);
+    g+=`<line x1="${ml}" y1="${y.toFixed(1)}" x2="${W-mr}" y2="${y.toFixed(1)}" stroke="#282d38"/>
+        <text x="${ml-7}" y="${(y+4).toFixed(1)}" fill="#6b7280" font-size="10" text-anchor="end">${v.toFixed(1)}</text>`;
+  }
+  /* divisa entre o que aconteceu e o que é projeção */
+  if(h>vis[0].data){
+    g+=`<line x1="${X(h).toFixed(1)}" y1="${mt}" x2="${X(h).toFixed(1)}" y2="${H-mb}" stroke="#6b7280" stroke-dasharray="3 4" opacity=".55"/>
+        <text x="${(X(h)+4).toFixed(1)}" y="${mt+9}" fill="#6b7280" font-size="9.5">hoje</text>`;
+  }
+  /* peso real */
+  if(vis.length>=2){
+    g+=`<polyline points="${vis.map(m=>X(m.data).toFixed(1)+','+Y(m.peso).toFixed(1)).join(' ')}" fill="none" stroke="#4b9fff" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>`;
+  }
+  vis.forEach(m=>{
+    g+=`<circle cx="${X(m.data).toFixed(1)}" cy="${Y(m.peso).toFixed(1)}" r="3.2" fill="#4b9fff"><title>${rotuloCurto(m.data)}: ${fmt(m.peso,2)} kg</title></circle>`;
+  });
+  /* tendência projetada pelas calorias */
+  g+=`<line x1="${X(tc.ult.data).toFixed(1)}" y1="${Y(tc.ult.peso).toFixed(1)}" x2="${X(fimProj).toFixed(1)}" y2="${Y(pFim).toFixed(1)}" stroke="#a78bfa" stroke-width="2.4" stroke-dasharray="6 5" stroke-linecap="round"/>
+      <circle cx="${X(fimProj).toFixed(1)}" cy="${Y(pFim).toFixed(1)}" r="4.5" fill="#a78bfa" stroke="#0f1115" stroke-width="2"><title>${rotuloCurto(fimProj)}: ${fmt(pFim,1)} kg projetados</title></circle>
+      <text x="${W-mr}" y="${(Y(pFim)-9).toFixed(1)}" fill="#a78bfa" font-size="10" text-anchor="end">${fmt(pFim,1)} kg</text>`;
+
+  g+=`<text x="${ml}" y="${H-6}" fill="#6b7280" font-size="10">${rotuloCurto(vis[0].data)}</text>
+      <text x="${W-mr}" y="${H-6}" fill="#6b7280" font-size="10" text-anchor="end">${rotuloCurto(fimProj)}</text></svg>
+      <div class="legend">
+        <span><i class="dot" style="background:#4b9fff"></i>peso real (pesagens)</span>
+        <span><i class="dot" style="background:#a78bfa"></i>tendência pelas calorias</span>
       </div>`;
   return g;
 }
