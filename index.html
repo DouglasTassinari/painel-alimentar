@@ -226,6 +226,8 @@ code{background:var(--bg);padding:2px 6px;border-radius:5px;font-size:12px}
       <div><label for="cfgM2">Meta 2 (kg)</label><input id="cfgM2" type="number" step="0.1" inputmode="decimal"></div>
     </div>
     <p class="note" id="tmbNota">—</p>
+    <p class="note">O <b>peso de partida</b> é só a referência das barras de progresso. Não é pesagem, não tem
+    data e não aparece nos gráficos — pra isso, registre o valor em <b>Hoje → Pesagem</b> com a data certa.</p>
     <div style="height:10px"></div>
     <button class="btn ghost sm" id="salvaCfg">Salvar perfil</button>
   </div>
@@ -528,12 +530,17 @@ document.getElementById('salvaMed').onclick = ()=>{
   const data = document.getElementById('mData').value || hojeISO();
   const nova = {data, peso, gordura:g('mGord'), visceral:g('mVisc')};
   const i = S.medidas.findIndex(m=>m.data===data);
+  const anterior = i>=0 ? S.medidas[i].peso : null;
   if(i>=0) S.medidas[i]=nova; else S.medidas.push(nova);
   S.medidas.sort((a,b)=>a.data.localeCompare(b.data));
   if(S.cfg.partida==null) S.cfg.partida = peso;
   salvar();
   ['mPeso','mGord','mVisc'].forEach(id=>document.getElementById(id).value='');
-  toast('Pesagem registrada ✓');
+  /* só existe uma pesagem por data: avisa quando substitui, senão o valor
+     antigo some sem explicação e a curva não ganha o ponto esperado */
+  toast(anterior!=null
+    ? `${rotuloCurto(data)} atualizado: ${fmt(anterior,2)} → ${fmt(peso,2)} kg`
+    : 'Pesagem registrada ✓');
   renderHoje(); renderPainel(); renderTabela();
 };
 
@@ -769,8 +776,19 @@ function renderPainel(){
 
   /* ---- peso ---- */
   out += `<h2>Peso</h2><div class="card">`;
-  out += meds.length>=2 ? graficoPeso(meds, mm)
-       : `<div class="empty">Registre pelo menos 2 pesagens<br>pra ver a curva de peso.</div>`;
+  if(meds.length>=2){
+    out += graficoPeso(meds, mm);
+  } else if(meds.length===1){
+    out += `<div class="empty">Só uma pesagem registrada:
+        <b>${fmt(meds[0].peso,2)} kg</b> em ${rotuloData(meds[0].data)}.<br>
+        A curva precisa de duas datas diferentes.</div>
+      <p class="note">Dois motivos comuns pra isso: o <b>peso de partida</b> do perfil não é pesagem — é só a
+        referência das barras de progresso, não tem data e por isso não vira ponto no gráfico. E só cabe
+        <b>uma pesagem por dia</b>: registrar de novo na mesma data substitui a anterior. Se você pesou antes,
+        lance aquele valor mudando a data no formulário de pesagem.</p>`;
+  } else {
+    out += `<div class="empty">Nenhuma pesagem registrada.</div>`;
+  }
   out += `</div>`;
 
   /* ---- heatmap ---- */
